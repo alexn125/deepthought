@@ -6,7 +6,7 @@ Simulation Control:
   Step Size: 0.1
   File Interval: 10.0
   RNG Seed: 0
-  Enable Graphics: true
+  Enable Graphics: false
   Command File: Inp_Cmd.txt
 Time:
   Date:

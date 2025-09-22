@@ -32,14 +32,14 @@
                 "make clean && make -j deploy"
             ]
         },
-        // {
-        //     "label": "profile build project",
-        //     "type": "shell",
-        //     "group": "build",
-        //     "args": [
-        //         "make clean && make -j profile"
-        //     ]
-        // },
+        {
+            "label": "profile build project",
+            "type": "shell",
+            "group": "build",
+            "args": [
+                "cmake -DCMAKE_BUILD_TYPE=DEBUG && make -j"
+            ]
+        },
         // {
         //     "label": "analyze project",
         //     "type": "shell",

@@ -1,0 +1,16 @@
+%YAML 1.2
+---
+IPCs:
+  - IPC:
+      Mode: TXRX
+      AC ID: 0
+      File Name: State00.42
+      Socket:
+        Role: SERVER
+        Host:
+          Name: localhost
+          Port: 10002
+        Blocking: true
+      Echo to stdout: true
+      Prefixes: ['SC[0].AC']
+
