@@ -92,10 +92,109 @@ MTBs:
       Axis: [0.0, 0.0, 1.0]
       Node: 0
 Thrusters: []
-Gyros: []
+Gyros:
+  - Gyro:
+      Index: 0
+      Sample Time: 0.1
+      Axis: [1.0,0.0,0.0]
+      Max Rate: 200.0
+      Scale Factor: 0.0
+      Quantization: 0.0008
+      Angle Random Walk: 0.09
+      Bias Stability: 2.2
+      Bias Stability Timespan: 1.0
+      Angle Noise: 0.72
+      Initial Bias: 0.1
+      Node: 0
+  - Gyro:
+      Index: 1
+      Sample Time: 0.1
+      Axis: [0.0,1.0,0.0]
+      Max Rate: 200.0
+      Scale Factor: 0.0
+      Quantization: 0.0008
+      Angle Random Walk: 0.09
+      Bias Stability: 2.2
+      Bias Stability Timespan: 1.0
+      Angle Noise: 0.72
+      Initial Bias: 0.1
+      Node: 0
+  - Gyro:
+      Index: 2
+      Sample Time: 0.1
+      Axis: [0.0,0.0,1.0]
+      Max Rate: 200.0
+      Scale Factor: 0.0
+      Quantization: 0.0008
+      Angle Random Walk: 0.09
+      Bias Stability: 2.2
+      Bias Stability Timespan: 1.0
+      Angle Noise: 0.72
+      Initial Bias: 0.1
+      Node: 0      
 Magnetometers: []
 CSSs: []
 FSSs: []
-STs: []
-GPSs: []
-Accelerometers: []
+STs:
+  - ST:
+      Index: 0
+      Sample Time: 1.0
+      Mounting Angles: 
+        Angles: [0.0,90.0,0.0]
+        Sequence: 321
+      Boresight Axis: Y_AXIS
+      FOV Size: [90.0,90.0]
+      Exclusion Angles:
+        Earth: 0.0
+        Sun: 0.0
+        Luna: 0.0
+      Noise Equivalent Angle: [0.0,0.0,0.0]
+      Node: 0
+GPSs:
+  - GPS:
+      Index: 0
+      Sample Time: 1.0
+      Position Noise: 0.01
+      Velocity Noise: 0.02
+      Time Noise: 20.0E-9
+      Node: 0
+Accelerometers:
+  - Accelerometer:
+      Index: 0
+      Sample Time: 0.1
+      Axis: [1.0,0.0,0.0]
+      Max Acceleration: 29.43
+      Scale Factor: 0.0
+      Quantization: 0.00123
+      DV Random Walk: 0.025
+      Bias Stability: 0.4905
+      Bias Stability Timespan: 1.0
+      DV Noise: 0.05886
+      Initial Bias: 0.04905
+      Node: 0
+  - Accelerometer:
+      Index: 1
+      Sample Time: 0.1
+      Axis: [0.0,1.0,0.0]
+      Max Acceleration: 29.43
+      Scale Factor: 0.0
+      Quantization: 0.00123
+      DV Random Walk: 0.025
+      Bias Stability: 0.4905
+      Bias Stability Timespan: 1.0
+      DV Noise: 0.05886
+      Initial Bias: 0.04905
+      Node: 0
+  - Accelerometer:
+      Index: 2
+      Sample Time: 0.1
+      Axis: [0.0,0.0,1.0]
+      Max Acceleration: 29.43
+      Scale Factor: 0.0
+      Quantization: 0.00123
+      DV Random Walk: 0.025
+      Bias Stability: 0.4905
+      Bias Stability Timespan: 1.0
+      DV Noise: 0.05886
+      Initial Bias: 0.04905
+      Node: 0            
