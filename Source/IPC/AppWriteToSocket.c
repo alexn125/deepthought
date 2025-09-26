@@ -587,6 +587,30 @@ void WriteToSocket(SOCKET Socket, struct AcType *AC)
             MsgLen += LineLen;
             if (AC->EchoEnabled) printf("%s",line);
 
+            sprintf(line,"SC[%ld].AC.FSS[%ld].H_Axis = %ld\n",
+               Isc,i,
+               AC->FSS[i].H_Axis);
+            LineLen = strlen(line);
+            memcpy(&Msg[MsgLen],line,LineLen);
+            MsgLen += LineLen;
+            if (AC->EchoEnabled) printf("%s",line);
+
+            sprintf(line,"SC[%ld].AC.FSS[%ld].V_Axis = %ld\n",
+               Isc,i,
+               AC->FSS[i].V_Axis);
+            LineLen = strlen(line);
+            memcpy(&Msg[MsgLen],line,LineLen);
+            MsgLen += LineLen;
+            if (AC->EchoEnabled) printf("%s",line);
+
+            sprintf(line,"SC[%ld].AC.FSS[%ld].BoreAxis = %ld\n",
+               Isc,i,
+               AC->FSS[i].BoreAxis);
+            LineLen = strlen(line);
+            memcpy(&Msg[MsgLen],line,LineLen);
+            MsgLen += LineLen;
+            if (AC->EchoEnabled) printf("%s",line);
+
          }
 
          for(i=0;i<AC->Nst;i++) {
@@ -762,6 +786,19 @@ void WriteToSocket(SOCKET Socket, struct AcType *AC)
                AC->Thr[i].rxA[0],
                AC->Thr[i].rxA[1],
                AC->Thr[i].rxA[2]);
+            LineLen = strlen(line);
+            memcpy(&Msg[MsgLen],line,LineLen);
+            MsgLen += LineLen;
+            if (AC->EchoEnabled) printf("%s",line);
+
+            sprintf(line,"SC[%ld].AC.Thr[%ld].DistVec = %18.12le %18.12le %18.12le %18.12le %18.12le %18.12le\n",
+               Isc,i,
+               AC->Thr[i].DistVec[0],
+               AC->Thr[i].DistVec[1],
+               AC->Thr[i].DistVec[2],
+               AC->Thr[i].DistVec[3],
+               AC->Thr[i].DistVec[4],
+               AC->Thr[i].DistVec[5]);
             LineLen = strlen(line);
             memcpy(&Msg[MsgLen],line,LineLen);
             MsgLen += LineLen;

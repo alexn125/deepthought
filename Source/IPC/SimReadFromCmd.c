@@ -30,17 +30,6 @@ void ReadFromCmd(void)
             RequestTimeRefresh = 1;
          }
 
-            if (sscanf(line,"SC[%ld].PosR = %le %le %le",
-               &Isc,
-               &DbleVal[0],
-               &DbleVal[1],
-               &DbleVal[2]) == 4) {
-               SC[Isc].PosR[0] = DbleVal[0];
-               SC[Isc].PosR[1] = DbleVal[1];
-               SC[Isc].PosR[2] = DbleVal[2];
-               SC[Isc].RequestStateRefresh = 1;
-            }
-
             if (sscanf(line,"SC[%ld].VelR = %le %le %le",
                &Isc,
                &DbleVal[0],
@@ -71,17 +60,6 @@ void ReadFromCmd(void)
                SC[Isc].bvb[0] = DbleVal[0];
                SC[Isc].bvb[1] = DbleVal[1];
                SC[Isc].bvb[2] = DbleVal[2];
-               SC[Isc].RequestStateRefresh = 1;
-            }
-
-            if (sscanf(line,"SC[%ld].Hvb = %le %le %le",
-               &Isc,
-               &DbleVal[0],
-               &DbleVal[1],
-               &DbleVal[2]) == 4) {
-               SC[Isc].Hvb[0] = DbleVal[0];
-               SC[Isc].Hvb[1] = DbleVal[1];
-               SC[Isc].Hvb[2] = DbleVal[2];
                SC[Isc].RequestStateRefresh = 1;
             }
 
@@ -225,17 +203,6 @@ void ReadFromCmd(void)
                SC[Isc].AC.Cmd.qrn[1] = DbleVal[1];
                SC[Isc].AC.Cmd.qrn[2] = DbleVal[2];
                SC[Isc].AC.Cmd.qrn[3] = DbleVal[3];
-            }
-
-            if (sscanf(line,"SC[%ld].B[%ld].wn = %le %le %le",
-               &Isc,&i,
-               &DbleVal[0],
-               &DbleVal[1],
-               &DbleVal[2]) == 5) {
-               SC[Isc].B[i].wn[0] = DbleVal[0];
-               SC[Isc].B[i].wn[1] = DbleVal[1];
-               SC[Isc].B[i].wn[2] = DbleVal[2];
-               SC[Isc].RequestStateRefresh = 1;
             }
 
             if (sscanf(line,"SC[%ld].B[%ld].qn = %le %le %le %le",
@@ -813,6 +780,24 @@ void ReadFromCmd(void)
                      SC[Isc].AC.FSS[i].CB[2][2] = DbleVal[8];
                   }
 
+                  if (sscanf(line,"SC[%ld].AC.FSS[%ld].H_Axis = %ld",
+                     &Isc,&i,
+                     &LongVal[0]) == 3) {
+                     SC[Isc].AC.FSS[i].H_Axis = LongVal[0];
+                  }
+
+                  if (sscanf(line,"SC[%ld].AC.FSS[%ld].V_Axis = %ld",
+                     &Isc,&i,
+                     &LongVal[0]) == 3) {
+                     SC[Isc].AC.FSS[i].V_Axis = LongVal[0];
+                  }
+
+                  if (sscanf(line,"SC[%ld].AC.FSS[%ld].BoreAxis = %ld",
+                     &Isc,&i,
+                     &LongVal[0]) == 3) {
+                     SC[Isc].AC.FSS[i].BoreAxis = LongVal[0];
+                  }
+
                   if (sscanf(line,"SC[%ld].AC.ST[%ld].qb = %le %le %le %le",
                      &Isc,&i,
                      &DbleVal[0],
@@ -971,6 +956,22 @@ void ReadFromCmd(void)
                      SC[Isc].AC.Thr[i].rxA[0] = DbleVal[0];
                      SC[Isc].AC.Thr[i].rxA[1] = DbleVal[1];
                      SC[Isc].AC.Thr[i].rxA[2] = DbleVal[2];
+                  }
+
+                  if (sscanf(line,"SC[%ld].AC.Thr[%ld].DistVec = %le %le %le %le %le %le",
+                     &Isc,&i,
+                     &DbleVal[0],
+                     &DbleVal[1],
+                     &DbleVal[2],
+                     &DbleVal[3],
+                     &DbleVal[4],
+                     &DbleVal[5]) == 8) {
+                     SC[Isc].AC.Thr[i].DistVec[0] = DbleVal[0];
+                     SC[Isc].AC.Thr[i].DistVec[1] = DbleVal[1];
+                     SC[Isc].AC.Thr[i].DistVec[2] = DbleVal[2];
+                     SC[Isc].AC.Thr[i].DistVec[3] = DbleVal[3];
+                     SC[Isc].AC.Thr[i].DistVec[4] = DbleVal[4];
+                     SC[Isc].AC.Thr[i].DistVec[5] = DbleVal[5];
                   }
 
                   if (sscanf(line,"SC[%ld].AC.Thr[%ld].Fmax = %le",

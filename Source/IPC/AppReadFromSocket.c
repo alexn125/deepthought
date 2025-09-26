@@ -64,6 +64,44 @@ void ReadFromSocket(SOCKET Socket, struct AcType *AC)
             }
          }
 
+         if (sscanf(line,"SC[%ld].AC.wbn = %le %le %le",
+            &Isc,
+            &DbleVal[0],
+            &DbleVal[1],
+            &DbleVal[2]) == 4) {
+            if (Isc == AC->ID) {
+               AC->wbn[0] = DbleVal[0];
+               AC->wbn[1] = DbleVal[1];
+               AC->wbn[2] = DbleVal[2];
+            }
+         }
+
+         if (sscanf(line,"SC[%ld].AC.qbn = %le %le %le %le",
+            &Isc,
+            &DbleVal[0],
+            &DbleVal[1],
+            &DbleVal[2],
+            &DbleVal[3]) == 5) {
+            if (Isc == AC->ID) {
+               AC->qbn[0] = DbleVal[0];
+               AC->qbn[1] = DbleVal[1];
+               AC->qbn[2] = DbleVal[2];
+               AC->qbn[3] = DbleVal[3];
+            }
+         }
+
+         if (sscanf(line,"SC[%ld].AC.svn = %le %le %le",
+            &Isc,
+            &DbleVal[0],
+            &DbleVal[1],
+            &DbleVal[2]) == 4) {
+            if (Isc == AC->ID) {
+               AC->svn[0] = DbleVal[0];
+               AC->svn[1] = DbleVal[1];
+               AC->svn[2] = DbleVal[2];
+            }
+         }
+
          if (sscanf(line,"SC[%ld].AC.G[%ld].Ang = %le %le %le",
             &Isc,&i,
             &DbleVal[0],
@@ -799,6 +837,30 @@ void ReadFromSocket(SOCKET Socket, struct AcType *AC)
                }
             }
 
+            if (sscanf(line,"SC[%ld].AC.FSS[%ld].H_Axis = %ld",
+               &Isc,&i,
+               &LongVal[0]) == 3) {
+               if (Isc == AC->ID) {
+                  AC->FSS[i].H_Axis = LongVal[0];
+               }
+            }
+
+            if (sscanf(line,"SC[%ld].AC.FSS[%ld].V_Axis = %ld",
+               &Isc,&i,
+               &LongVal[0]) == 3) {
+               if (Isc == AC->ID) {
+                  AC->FSS[i].V_Axis = LongVal[0];
+               }
+            }
+
+            if (sscanf(line,"SC[%ld].AC.FSS[%ld].BoreAxis = %ld",
+               &Isc,&i,
+               &LongVal[0]) == 3) {
+               if (Isc == AC->ID) {
+                  AC->FSS[i].BoreAxis = LongVal[0];
+               }
+            }
+
             if (sscanf(line,"SC[%ld].AC.ST[%ld].qb = %le %le %le %le",
                &Isc,&i,
                &DbleVal[0],
@@ -990,6 +1052,24 @@ void ReadFromSocket(SOCKET Socket, struct AcType *AC)
                   AC->Thr[i].rxA[0] = DbleVal[0];
                   AC->Thr[i].rxA[1] = DbleVal[1];
                   AC->Thr[i].rxA[2] = DbleVal[2];
+               }
+            }
+
+            if (sscanf(line,"SC[%ld].AC.Thr[%ld].DistVec = %le %le %le %le %le %le",
+               &Isc,&i,
+               &DbleVal[0],
+               &DbleVal[1],
+               &DbleVal[2],
+               &DbleVal[3],
+               &DbleVal[4],
+               &DbleVal[5]) == 8) {
+               if (Isc == AC->ID) {
+                  AC->Thr[i].DistVec[0] = DbleVal[0];
+                  AC->Thr[i].DistVec[1] = DbleVal[1];
+                  AC->Thr[i].DistVec[2] = DbleVal[2];
+                  AC->Thr[i].DistVec[3] = DbleVal[3];
+                  AC->Thr[i].DistVec[4] = DbleVal[4];
+                  AC->Thr[i].DistVec[5] = DbleVal[5];
                }
             }
 

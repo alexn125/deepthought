@@ -168,7 +168,7 @@ def main():
       Role = ''
 
       for InfileName in InfileList:
-         infile = open(InfileName,'rU')
+         infile = open(InfileName,'r')
 
          line = infile.readline()
          if line.startswith('/*~ Prototypes ~*/'):

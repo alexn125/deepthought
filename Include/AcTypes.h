@@ -392,13 +392,13 @@ struct AcType {
    /*~ Inputs ~*/
    double Time; /* Time since J2000 [[sec]] */
    long Mode;
-   double wbn[3];
-   double qbn[4];
+   double wbn[3]; /* [~>~] */
+   double qbn[4]; /* [~>~] */
    double CBN[3][3];
    double CLN[3][3];
    double wln[3];
    double qln[4];
-   double svn[3];
+   double svn[3]; /* [~>~] */
    double svb[3]; /* [~<~] */
    double bvn[3];
    double bvb[3]; /* [~<~] */

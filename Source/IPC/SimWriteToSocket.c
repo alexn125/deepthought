@@ -29,18 +29,6 @@ void WriteToSocket(SOCKET Socket,  char **Prefix, long Nprefix, long EchoEnabled
 
          for(Isc=0;Isc<Nsc;Isc++) {
             if (SC[Isc].Exists) {
-               sprintf(line,"SC[%ld].PosR = %18.12le %18.12le %18.12le\n",
-                  Isc,
-                  SC[Isc].PosR[0],
-                  SC[Isc].PosR[1],
-                  SC[Isc].PosR[2]);
-               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
-                  LineLen = strlen(line);
-                  memcpy(&Msg[MsgLen],line,LineLen);
-                  MsgLen += LineLen;
-                  if (EchoEnabled) printf("%s",line);
-               }
-
                sprintf(line,"SC[%ld].VelR = %18.12le %18.12le %18.12le\n",
                   Isc,
                   SC[Isc].VelR[0],
@@ -77,18 +65,6 @@ void WriteToSocket(SOCKET Socket,  char **Prefix, long Nprefix, long EchoEnabled
                   if (EchoEnabled) printf("%s",line);
                }
 
-               sprintf(line,"SC[%ld].Hvb = %18.12le %18.12le %18.12le\n",
-                  Isc,
-                  SC[Isc].Hvb[0],
-                  SC[Isc].Hvb[1],
-                  SC[Isc].Hvb[2]);
-               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
-                  LineLen = strlen(line);
-                  memcpy(&Msg[MsgLen],line,LineLen);
-                  MsgLen += LineLen;
-                  if (EchoEnabled) printf("%s",line);
-               }
-
                sprintf(line,"SC[%ld].AC.ParmLoadEnabled = %ld\n",
                   Isc,
                   SC[Isc].AC.ParmLoadEnabled);
@@ -102,6 +78,43 @@ void WriteToSocket(SOCKET Socket,  char **Prefix, long Nprefix, long EchoEnabled
                sprintf(line,"SC[%ld].AC.ParmDumpEnabled = %ld\n",
                   Isc,
                   SC[Isc].AC.ParmDumpEnabled);
+               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                  LineLen = strlen(line);
+                  memcpy(&Msg[MsgLen],line,LineLen);
+                  MsgLen += LineLen;
+                  if (EchoEnabled) printf("%s",line);
+               }
+
+               sprintf(line,"SC[%ld].AC.wbn = %18.12le %18.12le %18.12le\n",
+                  Isc,
+                  SC[Isc].AC.wbn[0],
+                  SC[Isc].AC.wbn[1],
+                  SC[Isc].AC.wbn[2]);
+               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                  LineLen = strlen(line);
+                  memcpy(&Msg[MsgLen],line,LineLen);
+                  MsgLen += LineLen;
+                  if (EchoEnabled) printf("%s",line);
+               }
+
+               sprintf(line,"SC[%ld].AC.qbn = %18.12le %18.12le %18.12le %18.12le\n",
+                  Isc,
+                  SC[Isc].AC.qbn[0],
+                  SC[Isc].AC.qbn[1],
+                  SC[Isc].AC.qbn[2],
+                  SC[Isc].AC.qbn[3]);
+               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                  LineLen = strlen(line);
+                  memcpy(&Msg[MsgLen],line,LineLen);
+                  MsgLen += LineLen;
+                  if (EchoEnabled) printf("%s",line);
+               }
+
+               sprintf(line,"SC[%ld].AC.svn = %18.12le %18.12le %18.12le\n",
+                  Isc,
+                  SC[Isc].AC.svn[0],
+                  SC[Isc].AC.svn[1],
+                  SC[Isc].AC.svn[2]);
                if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
                   LineLen = strlen(line);
                   memcpy(&Msg[MsgLen],line,LineLen);
@@ -401,18 +414,6 @@ void WriteToSocket(SOCKET Socket,  char **Prefix, long Nprefix, long EchoEnabled
                }
 
                for(i=0;i<SC[Isc].Nb;i++) {
-                  sprintf(line,"SC[%ld].B[%ld].wn = %18.12le %18.12le %18.12le\n",
-                     Isc,i,
-                     SC[Isc].B[i].wn[0],
-                     SC[Isc].B[i].wn[1],
-                     SC[Isc].B[i].wn[2]);
-                  if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
-                     LineLen = strlen(line);
-                     memcpy(&Msg[MsgLen],line,LineLen);
-                     MsgLen += LineLen;
-                     if (EchoEnabled) printf("%s",line);
-                  }
-
                   sprintf(line,"SC[%ld].B[%ld].qn = %18.12le %18.12le %18.12le %18.12le\n",
                      Isc,i,
                      SC[Isc].B[i].qn[0],
@@ -1174,6 +1175,36 @@ void WriteToSocket(SOCKET Socket,  char **Prefix, long Nprefix, long EchoEnabled
                         if (EchoEnabled) printf("%s",line);
                      }
 
+                     sprintf(line,"SC[%ld].AC.FSS[%ld].H_Axis = %ld\n",
+                        Isc,i,
+                        SC[Isc].AC.FSS[i].H_Axis);
+                     if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                        LineLen = strlen(line);
+                        memcpy(&Msg[MsgLen],line,LineLen);
+                        MsgLen += LineLen;
+                        if (EchoEnabled) printf("%s",line);
+                     }
+
+                     sprintf(line,"SC[%ld].AC.FSS[%ld].V_Axis = %ld\n",
+                        Isc,i,
+                        SC[Isc].AC.FSS[i].V_Axis);
+                     if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                        LineLen = strlen(line);
+                        memcpy(&Msg[MsgLen],line,LineLen);
+                        MsgLen += LineLen;
+                        if (EchoEnabled) printf("%s",line);
+                     }
+
+                     sprintf(line,"SC[%ld].AC.FSS[%ld].BoreAxis = %ld\n",
+                        Isc,i,
+                        SC[Isc].AC.FSS[i].BoreAxis);
+                     if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                        LineLen = strlen(line);
+                        memcpy(&Msg[MsgLen],line,LineLen);
+                        MsgLen += LineLen;
+                        if (EchoEnabled) printf("%s",line);
+                     }
+
                   }
 
                   for(i=0;i<SC[Isc].AC.Nst;i++) {
@@ -1381,6 +1412,21 @@ void WriteToSocket(SOCKET Socket,  char **Prefix, long Nprefix, long EchoEnabled
                         SC[Isc].AC.Thr[i].rxA[0],
                         SC[Isc].AC.Thr[i].rxA[1],
                         SC[Isc].AC.Thr[i].rxA[2]);
+                     if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                        LineLen = strlen(line);
+                        memcpy(&Msg[MsgLen],line,LineLen);
+                        MsgLen += LineLen;
+                        if (EchoEnabled) printf("%s",line);
+                     }
+
+                     sprintf(line,"SC[%ld].AC.Thr[%ld].DistVec = %18.12le %18.12le %18.12le %18.12le %18.12le %18.12le\n",
+                        Isc,i,
+                        SC[Isc].AC.Thr[i].DistVec[0],
+                        SC[Isc].AC.Thr[i].DistVec[1],
+                        SC[Isc].AC.Thr[i].DistVec[2],
+                        SC[Isc].AC.Thr[i].DistVec[3],
+                        SC[Isc].AC.Thr[i].DistVec[4],
+                        SC[Isc].AC.Thr[i].DistVec[5]);
                      if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
                         LineLen = strlen(line);
                         memcpy(&Msg[MsgLen],line,LineLen);
