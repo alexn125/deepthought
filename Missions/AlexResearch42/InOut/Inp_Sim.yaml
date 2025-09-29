@@ -10,14 +10,14 @@ Simulation Control:
   Command File: Inp_Cmd.txt
 Time:
   Date:
-    Month: 10
-    Day: 18
+    Month: 8
+    Day: 24
     Year: 2025
   Time:
-    Hour: 8
-    Minute: 30
-    Second: 0
-    Millisecond: 0
+    Hour: 17
+    Minute: 21
+    Second: 45
+    Millisecond: 15.724800097814
   Leap Seconds: 37.0
 Orbits:
   - Name: Orb_CubeSat6U

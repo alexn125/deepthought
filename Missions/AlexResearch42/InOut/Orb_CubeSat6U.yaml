@@ -10,12 +10,12 @@ Orbit:
   Init:
     Method: KEP
     SMA Parameterization: PA
-    Periapsis: 450.0
-    Apoapsis: 450.0
-    Inclination: 28.5
-    RAAN: 0.0
-    Arg of Periapsis: 0.0
-    True Anomaly: 0.0
+    Periapsis: 414.02554444320685
+    Apoapsis: 418.5329621758535
+    Inclination: 51.6355
+    RAAN: 327.3786
+    Arg of Periapsis: 265.719
+    True Anomaly: 94.37989973521623
 Formation:
   Fixed Frame: L
   Euler Angles:
