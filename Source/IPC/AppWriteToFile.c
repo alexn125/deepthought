@@ -210,12 +210,6 @@ void WriteToFile(FILE *StateFile, struct AcType *AC)
          fprintf(StateFile,"%s",line);
          if (AC->EchoEnabled) printf("%s",line);
 
-         sprintf(line,"SC[%ld].AC.DT = %18.12le\n",
-            Isc,
-            AC->DT);
-         fprintf(StateFile,"%s",line);
-         if (AC->EchoEnabled) printf("%s",line);
-
          sprintf(line,"SC[%ld].AC.mass = %18.12le\n",
             Isc,
             AC->mass);

@@ -104,7 +104,7 @@ Gyros:
       Bias Stability: 2.2
       Bias Stability Timespan: 1.0
       Angle Noise: 0.72
-      Initial Bias: 0.1
+      Initial Bias: -4.84813681109536e-06
       Node: 0
   - Gyro:
       Index: 1
@@ -117,7 +117,7 @@ Gyros:
       Bias Stability: 2.2
       Bias Stability Timespan: 1.0
       Angle Noise: 0.72
-      Initial Bias: 0.1
+      Initial Bias: 9.69627362219072e-06
       Node: 0
   - Gyro:
       Index: 2
@@ -130,7 +130,7 @@ Gyros:
       Bias Stability: 2.2
       Bias Stability Timespan: 1.0
       Angle Noise: 0.72
-      Initial Bias: 0.1
+      Initial Bias: -1.45444104332861e-05
       Node: 0      
 Magnetometers: []
 CSSs: []

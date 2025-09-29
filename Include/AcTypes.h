@@ -384,13 +384,13 @@ struct AcType {
    double Pi;
    double TwoPi;
 
-   double DT;
+   double DT; /* [~>~] */
    double mass;
    double cm[3];
    double MOI[3][3];
 
    /*~ Inputs ~*/
-   double Time; /* Time since J2000 [[sec]] */
+   double Time; /* [~>~] */
    long Mode;
    double wbn[3]; /* [~>~] */
    double qbn[4]; /* [~>~] */

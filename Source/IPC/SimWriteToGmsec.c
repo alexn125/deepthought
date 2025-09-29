@@ -92,6 +92,28 @@ void WriteToGmsec(GMSEC_ConnectionMgr ConnMgr,GMSEC_Status status,  char **Prefi
                   if (EchoEnabled) printf("%s",line);
                }
 
+               sprintf(line,"SC[%ld].AC.DT = %18.12le\n",
+                  Isc,
+                  SC[Isc].AC.DT);
+               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                  LineLen = strlen(line);
+                  memcpy(&Msg[MsgLen],line,LineLen);
+                  MsgLen += LineLen;
+
+                  if (EchoEnabled) printf("%s",line);
+               }
+
+               sprintf(line,"SC[%ld].AC.Time = %18.12le\n",
+                  Isc,
+                  SC[Isc].AC.Time);
+               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                  LineLen = strlen(line);
+                  memcpy(&Msg[MsgLen],line,LineLen);
+                  MsgLen += LineLen;
+
+                  if (EchoEnabled) printf("%s",line);
+               }
+
                sprintf(line,"SC[%ld].AC.wbn = %18.12le %18.12le %18.12le\n",
                   Isc,
                   SC[Isc].AC.wbn[0],
@@ -860,17 +882,6 @@ void WriteToGmsec(GMSEC_ConnectionMgr ConnMgr,GMSEC_Status status,  char **Prefi
                   sprintf(line,"SC[%ld].AC.TwoPi = %18.12le\n",
                      Isc,
                      SC[Isc].AC.TwoPi);
-                  if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
-                     LineLen = strlen(line);
-                     memcpy(&Msg[MsgLen],line,LineLen);
-                     MsgLen += LineLen;
-
-                     if (EchoEnabled) printf("%s",line);
-                  }
-
-                  sprintf(line,"SC[%ld].AC.DT = %18.12le\n",
-                     Isc,
-                     SC[Isc].AC.DT);
                   if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
                      LineLen = strlen(line);
                      memcpy(&Msg[MsgLen],line,LineLen);

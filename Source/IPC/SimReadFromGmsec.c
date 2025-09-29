@@ -441,12 +441,6 @@ void ReadFromGmsec(GMSEC_ConnectionMgr ConnMgr,GMSEC_Status status, long EchoEna
                      SC[Isc].AC.TwoPi = DbleVal[0];
                   }
 
-                  if (sscanf(line,"SC[%ld].AC.DT = %le",
-                     &Isc,
-                     &DbleVal[0]) == 2) {
-                     SC[Isc].AC.DT = DbleVal[0];
-                  }
-
                   if (sscanf(line,"SC[%ld].AC.mass = %le",
                      &Isc,
                      &DbleVal[0]) == 2) {

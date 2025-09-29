@@ -69,6 +69,22 @@ void WriteToFile(FILE *StateFile, char **Prefix, long Nprefix, long EchoEnabled)
                   if (EchoEnabled) printf("%s",line);
                }
 
+               sprintf(line,"SC[%ld].AC.DT = %18.12le\n",
+                  Isc,
+                  SC[Isc].AC.DT);
+               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                  fprintf(StateFile,"%s",line);
+                  if (EchoEnabled) printf("%s",line);
+               }
+
+               sprintf(line,"SC[%ld].AC.Time = %18.12le\n",
+                  Isc,
+                  SC[Isc].AC.Time);
+               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                  fprintf(StateFile,"%s",line);
+                  if (EchoEnabled) printf("%s",line);
+               }
+
                sprintf(line,"SC[%ld].AC.wbn = %18.12le %18.12le %18.12le\n",
                   Isc,
                   SC[Isc].AC.wbn[0],
@@ -657,14 +673,6 @@ void WriteToFile(FILE *StateFile, char **Prefix, long Nprefix, long EchoEnabled)
                   sprintf(line,"SC[%ld].AC.TwoPi = %18.12le\n",
                      Isc,
                      SC[Isc].AC.TwoPi);
-                  if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
-                     fprintf(StateFile,"%s",line);
-                     if (EchoEnabled) printf("%s",line);
-                  }
-
-                  sprintf(line,"SC[%ld].AC.DT = %18.12le\n",
-                     Isc,
-                     SC[Isc].AC.DT);
                   if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
                      fprintf(StateFile,"%s",line);
                      if (EchoEnabled) printf("%s",line);

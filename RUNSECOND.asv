@@ -107,7 +107,7 @@ while its <= itsmax
         else
             sim_time = sim_time + dt;
             j2ktime = j2ktime_start + sim_time;
-        end
+        end    
 
         meas.w = [str2double(gyro1str{1}(gyroindex:end)); str2double(gyro2str{1}(gyroindex:end)); str2double(gyro3str{1}(gyroindex:end))];
 
@@ -124,7 +124,7 @@ while its <= itsmax
         true_attinter = replace(attstrtrue,'e+0','e');
         true_attinter2 = replace(true_attinter,'e-0','e-');
         at_true = str2num(true_attinter2{1}(trueattindex:end))';
-
+        
         w1 = replace(angvelstrtrue,'e+0','e');
         w2 = replace(w1,'e-0','e-');
         w_true = str2num(w2{1}(avindex:end))';
@@ -137,14 +137,14 @@ while its <= itsmax
             RETURNMSG = true;
         end
         %% Do GNC
-
+        
         meas.MRP = zeros(3,1); % attitude measurement
         for i = 1:3
             meas.MRP(i) = st_att(i)/(1+st_att(4));
-        end
-
+        end    
+        
         [~,~] = Navigation(est,meas,noise,sim_time,dt);
-
+        
         %store nav outputs
         cnt = cnt + 1;
         nav.m_history(:,cnt) = est.mkm;
@@ -177,7 +177,7 @@ while its <= itsmax
 end
 
 if simplots == true
-    pvec = nav.m_history(1:3,:);
+     pvec = nav.m_history(1:3,:);
     bvec = nav.m_history(4:6,:);
     tt = nav.t_history;
     Pvec = zeros(6,cnt);
@@ -195,6 +195,6 @@ if simplots == true
     plot(tt,pvec(2,:))
     grid on
     nexttile
-    plot(tt,pvec(3,:))
+    plot(tt,pvec(3,:),truth.tspan,truth.MRP_history(3,:))
     grid on
-end
+end    

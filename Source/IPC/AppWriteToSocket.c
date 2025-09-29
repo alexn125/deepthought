@@ -270,14 +270,6 @@ void WriteToSocket(SOCKET Socket, struct AcType *AC)
          MsgLen += LineLen;
          if (AC->EchoEnabled) printf("%s",line);
 
-         sprintf(line,"SC[%ld].AC.DT = %18.12le\n",
-            Isc,
-            AC->DT);
-         LineLen = strlen(line);
-         memcpy(&Msg[MsgLen],line,LineLen);
-         MsgLen += LineLen;
-         if (AC->EchoEnabled) printf("%s",line);
-
          sprintf(line,"SC[%ld].AC.mass = %18.12le\n",
             Isc,
             AC->mass);

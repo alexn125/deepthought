@@ -64,6 +64,22 @@ void ReadFromSocket(SOCKET Socket, struct AcType *AC)
             }
          }
 
+         if (sscanf(line,"SC[%ld].AC.DT = %le",
+            &Isc,
+            &DbleVal[0]) == 2) {
+            if (Isc == AC->ID) {
+               AC->DT = DbleVal[0];
+            }
+         }
+
+         if (sscanf(line,"SC[%ld].AC.Time = %le",
+            &Isc,
+            &DbleVal[0]) == 2) {
+            if (Isc == AC->ID) {
+               AC->Time = DbleVal[0];
+            }
+         }
+
          if (sscanf(line,"SC[%ld].AC.wbn = %le %le %le",
             &Isc,
             &DbleVal[0],
@@ -464,14 +480,6 @@ void ReadFromSocket(SOCKET Socket, struct AcType *AC)
                &DbleVal[0]) == 2) {
                if (Isc == AC->ID) {
                   AC->TwoPi = DbleVal[0];
-               }
-            }
-
-            if (sscanf(line,"SC[%ld].AC.DT = %le",
-               &Isc,
-               &DbleVal[0]) == 2) {
-               if (Isc == AC->ID) {
-                  AC->DT = DbleVal[0];
                }
             }
 
