@@ -15,10 +15,10 @@ Orbit:
   Vel wrt F: [0.0, 0.0, 0.0]
 Attitude:
   Ang Vel Frame: N
-  Att Representation: A
+  Att Representation: Q
   Att Frame: L
-  Ang Vel: [0.0, 0.0, 0.0]
-  Quaternion: [0.0, 0.0, 0.0, 1.0]
+  Ang Vel: [-0.00349065850398866, 0.00349065850398866, 0.00349065850398866]
+  Quaternion: [0.0, 0.198019801980198, 0.0, 0.98019801980198]
   Euler Angles:
     Angles: [0.0, 0.0, 0.0]
     Sequence: 213
@@ -33,10 +33,10 @@ Dynamics Flags:
 Bodies:
   - Body: &Body_0
       Index: 0
-      Mass: 12.0
-      MOI: [0.13, 0.1, 0.05]
+      Mass: 8.0
+      MOI: [0.026, 0.06, 0.085]
       POI: [0.0, 0.0, 0.0]
-      Pos of CM: [0.005, 0.005, 0.01]
+      Pos of CM: [0.0, 0.0, 0.0]
       Constant Momentum: [0.0, 0.0, 0.0]
       Constant Dipole: [0.0, 0.0, 0.0]
       Geometry File Name: Cubesat_6U.obj
@@ -49,9 +49,9 @@ Wheels:
       Index: 0
       Initial Momentum: 0.0
       Axis: [1.0, 0.0, 0.0]
-      Max Torque: 0.004
-      Max Momentum: 0.02
-      Rotor Inertia: 0.012
+      Max Torque: 0.0
+      Max Momentum: 0.0
+      Rotor Inertia: 0.0081
       Body: *Body_0
       Node: 0
       Drag-Jitter File Name: NONE
@@ -59,9 +59,9 @@ Wheels:
       Index: 1
       Initial Momentum: 0.0
       Axis: [0.0, 1.0, 0.0]
-      Max Torque: 0.004
-      Max Momentum: 0.02
-      Rotor Inertia: 0.012
+      Max Torque: 0.0
+      Max Momentum: 0.0
+      Rotor Inertia: 0.0081
       Body: *Body_0
       Node: 0
       Drag-Jitter File Name: NONE
@@ -69,9 +69,9 @@ Wheels:
       Index: 2
       Initial Momentum: 0.0
       Axis: [0.0, 0.0, 1.0]
-      Max Torque: 0.004
-      Max Momentum: 0.02
-      Rotor Inertia: 0.012
+      Max Torque: 0.0
+      Max Momentum: 0.0
+      Rotor Inertia: 0.0081
       Body: *Body_0
       Node: 0
       Drag-Jitter File Name: NONE

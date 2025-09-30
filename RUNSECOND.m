@@ -24,7 +24,7 @@ RETURNMSG = false;
 
 sim_time = 0.0;
 
-simplots = true;
+simplots = false;
 
 %% initialize nav
 
@@ -157,6 +157,11 @@ while its <= itsmax
             nav.P_history(:,:,cnt) = est.Pkp;
             nav.t_history(:,cnt) = sim_time+dt;
         end
+
+        body1 = [0;1;0];
+        body2 = [0;0;1];
+
+        att_des = Guidance(gps_pos,sunpnt_true,body1,body2);
 
         %% Process commands
     end
