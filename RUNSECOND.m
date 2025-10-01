@@ -160,9 +160,9 @@ while its <= itsmax
 
         body1 = [0;1;0];
         body2 = [0;0;1];
-
-        att_des = Guidance(gps_pos,sunpnt_true,body1,body2);
-
+        disp(gps_pos/norm(gps_pos))
+        [quat_des,MRP_des] = Guidance(gps_pos,sunpnt_true,body1,body2);
+        % disp(quat_des)
         %% Process commands
     end
     %% Send commands

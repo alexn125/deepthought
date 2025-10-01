@@ -63,7 +63,7 @@ Perturbation Models:
   CFD Slosh: false
   Albedo on CSS: false
   Output Env Torques to File: false
-Ephem Type: MEAN
+Ephem Type: SPICE
 Celestial Bodies:
   Mercury: true
   Venus: true
