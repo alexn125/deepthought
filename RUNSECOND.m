@@ -24,7 +24,7 @@ RETURNMSG = false;
 
 sim_time = 0.0;
 
-simplots = false;
+simplots = true;
 
 %% initialize nav
 
@@ -58,6 +58,14 @@ nav.t_history = zeros(1,2*11);
 nav.m_history(:,1) = m0;
 nav.P_history(:,:,1) = P0;
 
+%% Control gains
+
+Kp = -1/20;
+Kd = -1/10;
+gains.Kp = Kp*eye(3,3);
+gains.Kd = Kd*eye(3,3);
+
+%% GNC loop
 while its <= itsmax
     %% Read the socket
     if its > 1
@@ -160,18 +168,35 @@ while its <= itsmax
 
         body1 = [0;1;0];
         body2 = [0;0;1];
-        disp(gps_pos/norm(gps_pos))
-        [quat_des,MRP_des] = Guidance(gps_pos,sunpnt_true,body1,body2);
+
+        % disp(gps_pos/norm(gps_pos))
+
+        [~,~] = Guidance(gps_pos,sunpnt_true,body1,body2);
+
         % disp(quat_des)
+        
+        triad.quat_des = zeros(4,1);
+        triad.MRP_des = zeros(3,1);
+        
+        w_des = [0;0;0];
+
+        t_com = Control(gains,triad,est,w_des,meas);
+        
         %% Process commands
+        
+        t0str = append('SC[0].AC.Whl[0].Tcmd = ',mat2str(t_com(1)));
+        t1str = append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2)));
+        t2str = append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3)));
+
     end
     %% Send commands
 
     write(t,'Ack')
 
     if RETURNMSG == true
-        % send command
-        % disp(its)
+        writeline(t,t0str)
+        writeline(t,t1str)
+        writeline(t,t2str)
     end
 
     writeline(t,'[EOF]')
