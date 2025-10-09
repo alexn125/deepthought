@@ -187,7 +187,7 @@ while its <= itsmax
         t0str = append('SC[0].AC.Whl[0].Tcmd = ',mat2str(t_com(1)));
         t1str = append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2)));
         t2str = append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3)));
-
+        RETURNMSG = true;
     end
     %% Send commands
 
