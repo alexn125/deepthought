@@ -21,6 +21,31 @@ void WriteToFile(FILE *StateFile, char **Prefix, long Nprefix, long EchoEnabled)
       for(Ipfx=0;Ipfx<Nprefix;Ipfx++) {
          PfxLen = strlen(Prefix[Ipfx]);
 
+         for(Iorb=0;Iorb<Norb;Iorb++) {
+            if (Orb[Iorb].Exists) {
+               sprintf(line,"Orb[%ld].PosN = %18.12le %18.12le %18.12le\n",
+                  Iorb,
+                  Orb[Iorb].PosN[0],
+                  Orb[Iorb].PosN[1],
+                  Orb[Iorb].PosN[2]);
+               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                  fprintf(StateFile,"%s",line);
+                  if (EchoEnabled) printf("%s",line);
+               }
+
+               sprintf(line,"Orb[%ld].VelN = %18.12le %18.12le %18.12le\n",
+                  Iorb,
+                  Orb[Iorb].VelN[0],
+                  Orb[Iorb].VelN[1],
+                  Orb[Iorb].VelN[2]);
+               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
+                  fprintf(StateFile,"%s",line);
+                  if (EchoEnabled) printf("%s",line);
+               }
+
+            }
+         }
+
          for(Isc=0;Isc<Nsc;Isc++) {
             if (SC[Isc].Exists) {
                sprintf(line,"SC[%ld].VelR = %18.12le %18.12le %18.12le\n",
@@ -506,31 +531,6 @@ void WriteToFile(FILE *StateFile, char **Prefix, long Nprefix, long EchoEnabled)
                   World[Iw].eph.VelN[0],
                   World[Iw].eph.VelN[1],
                   World[Iw].eph.VelN[2]);
-               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
-                  fprintf(StateFile,"%s",line);
-                  if (EchoEnabled) printf("%s",line);
-               }
-
-            }
-         }
-
-         for(Iorb=0;Iorb<Norb;Iorb++) {
-            if (Orb[Iorb].Exists) {
-               sprintf(line,"Orb[%ld].PosN = %18.12le %18.12le %18.12le\n",
-                  Iorb,
-                  Orb[Iorb].PosN[0],
-                  Orb[Iorb].PosN[1],
-                  Orb[Iorb].PosN[2]);
-               if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
-                  fprintf(StateFile,"%s",line);
-                  if (EchoEnabled) printf("%s",line);
-               }
-
-               sprintf(line,"Orb[%ld].VelN = %18.12le %18.12le %18.12le\n",
-                  Iorb,
-                  Orb[Iorb].VelN[0],
-                  Orb[Iorb].VelN[1],
-                  Orb[Iorb].VelN[2]);
                if (!strncmp(line,Prefix[Ipfx],PfxLen)) {
                   fprintf(StateFile,"%s",line);
                   if (EchoEnabled) printf("%s",line);

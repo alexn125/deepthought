@@ -95,14 +95,17 @@ while its <= itsmax
             readline(t);
         end
     end
-    % Reaction wheels
-    whl1str = readline(t);
-    whl2str = readline(t);
-    whl3str = readline(t);
+    
     % Accelerometers
     acc1str = readline(t);
     acc2str = readline(t);
     acc3str = readline(t);
+
+    % Reaction wheels
+    whl1str = readline(t);
+    whl2str = readline(t);
+    whl3str = readline(t);
+
     readline(t); % [EOF]
 
     %% Process socket msg
@@ -226,5 +229,18 @@ if simplots == true
     grid on
     nexttile
     plot(tt,pvec(3,:))
+    grid on
+
+    figure
+    t = tiledlayout(3,1);
+    title(t,'Estimated bias')
+    nexttile
+    plot(tt,bvec(1,:))
+    grid on
+    nexttile
+    plot(tt,bvec(2,:))
+    grid on
+    nexttile
+    plot(tt,bvec(3,:))
     grid on
 end

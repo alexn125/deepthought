@@ -13,6 +13,8 @@ Q = noise.Q;
 w_meas = meas.w;
 att = meas.MRP;
 
+disp(att)
+
 %% prep for integration
 pkm1 = mkm1(1:3);
 bkm1 = mkm1(4:6);

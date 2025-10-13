@@ -49,8 +49,8 @@ Wheels:
       Index: 0
       Initial Momentum: 0.0
       Axis: [1.0, 0.0, 0.0]
-      Max Torque: 0.0
-      Max Momentum: 0.0
+      Max Torque: 100.0
+      Max Momentum: 100.0
       Rotor Inertia: 0.0081
       Body: *Body_0
       Node: 0
@@ -59,8 +59,8 @@ Wheels:
       Index: 1
       Initial Momentum: 0.0
       Axis: [0.0, 1.0, 0.0]
-      Max Torque: 0.0
-      Max Momentum: 0.0
+      Max Torque: 100.0
+      Max Momentum: 100.0
       Rotor Inertia: 0.0081
       Body: *Body_0
       Node: 0
@@ -69,8 +69,8 @@ Wheels:
       Index: 2
       Initial Momentum: 0.0
       Axis: [0.0, 0.0, 1.0]
-      Max Torque: 0.0
-      Max Momentum: 0.0
+      Max Torque: 100.0
+      Max Momentum: 100.0
       Rotor Inertia: 0.0081
       Body: *Body_0
       Node: 0
