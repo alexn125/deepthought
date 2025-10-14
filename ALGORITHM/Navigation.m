@@ -1,4 +1,4 @@
-function [mkp,Pkp] = Navigation(est,meas,noise,sim_time,dt)
+function [mkm1,Pkm1,mkm,Pkm,mkp,Pkp] = Navigation(est,meas,noise,sim_time,dt)
 
 addpath('ALGORITHM/transforms/')
 addpath('ALGORITHM/models/')
@@ -12,8 +12,6 @@ Q = noise.Q;
 
 w_meas = meas.w;
 att = meas.MRP;
-
-disp(att)
 
 %% prep for integration
 pkm1 = mkm1(1:3);
@@ -34,8 +32,6 @@ G_hat = [(-1/4)*B zeros(3,3);zeros(3,3) eye(3,3)];
 
 mkm = transpose(X(end,1:n));
 Pkm = reshape(transpose(X(end,n+1:end)),n,n);
-est.mkm = mkm;
-est.Pkm = Pkm;
 
 %% measurement update prep
 pkm = mkm(1:3); % estimated MRPs at step k, before update
@@ -65,13 +61,5 @@ end
 Kk = Pkm*Hk'*inv(Hk*Pkm*Hk' + R);
 mkp = mkm + Kk*yk;
 Pkp = (eye(6) - Kk*Hk)*Pkm;
-est.mkp = mkp;
-est.Pkp = Pkp;
-
-%% set indices for next time
-mkm1 = mkp;
-Pkm1 = Pkp;
-est.mkm1 = mkm1;
-est.Pkm1 = Pkm1;
 
 end

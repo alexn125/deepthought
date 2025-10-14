@@ -17,7 +17,7 @@ trueattindex = 16;
 avindex = 16;
 sunindex = 16;
 
-itsmax = 101;
+itsmax = 1001;
 its = 1;
 gnccount = 1;
 RETURNMSG = false;
@@ -154,7 +154,12 @@ while its <= itsmax
             meas.MRP(i) = st_att(i)/(1+st_att(4));
         end
 
-        [~,~] = Navigation(est,meas,noise,sim_time,dt);
+        [~,~,mkm,Pkm,mkp,Pkp] = Navigation(est,meas,noise,sim_time,dt);
+        
+        est.mkm = mkm;
+        est.Pkm = Pkm;
+        est.mkp = mkp;
+        est.Pkp = Pkp;
 
         %store nav outputs
         cnt = cnt + 1;
@@ -174,7 +179,10 @@ while its <= itsmax
 
         % disp(gps_pos/norm(gps_pos))
 
-        [~,~] = Guidance(gps_pos,sunpnt_true,body1,body2);
+        [~,MRP_des] = Guidance(gps_pos,sunpnt_true,body1,body2);
+
+        % triad.quat_des = quat_des;
+        triad.MRP_des = MRP_des;
 
         % disp(quat_des)
         
@@ -184,12 +192,18 @@ while its <= itsmax
         w_des = [0;0;0];
 
         t_com = Control(gains,triad,est,w_des,meas);
+
+        %% set navigation indices for next time
+        mkm1 = mkp;
+        Pkm1 = Pkp;
+        est.mkm1 = mkm1;
+        est.Pkm1 = Pkm1;
         
         %% Process commands
         
-        t0str = append('SC[0].AC.Whl[0].Tcmd = ',mat2str(t_com(1)));
-        t1str = append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2)));
-        t2str = append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3)));
+        t0str = append('SC[0].AC.Whl[0].Tcmd = ',mat2str(t_com(1)/100));
+        t1str = append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2)/100));
+        t2str = append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3)/100));
         RETURNMSG = true;
     end
     %% Send commands
