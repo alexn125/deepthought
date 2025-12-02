@@ -17,7 +17,7 @@ trueattindex = 16;
 avindex = 16;
 sunindex = 16;
 
-itsmax = 1001;
+itsmax = 3001;
 its = 1;
 gnccount = 1;
 RETURNMSG = false;
@@ -179,19 +179,19 @@ while its <= itsmax
 
         % disp(gps_pos/norm(gps_pos))
 
-        [~,MRP_des] = Guidance(gps_pos,sunpnt_true,body1,body2);
+        % [~,MRP_des] = Guidance(gps_pos,sunpnt_true,body1,body2);
 
         % triad.quat_des = quat_des;
-        triad.MRP_des = MRP_des;
+        % triad.MRP_des = MRP_des;
 
         % disp(quat_des)
         
-        triad.quat_des = zeros(4,1);
-        triad.MRP_des = zeros(3,1);
+        % triad.quat_des = zeros(4,1);
+        % triad.MRP_des = zeros(3,1);
         
-        w_des = [0;0;0];
+        % w_des = [0;0;0];
 
-        t_com = Control(gains,triad,est,w_des,meas);
+        % t_com = Control(gains,triad,est,w_des,meas);
 
         %% set navigation indices for next time
         mkm1 = mkp;
@@ -201,19 +201,19 @@ while its <= itsmax
         
         %% Process commands
         
-        t0str = append('SC[0].AC.Whl[0].Tcmd = ',mat2str(t_com(1)/100));
-        t1str = append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2)/100));
-        t2str = append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3)/100));
-        RETURNMSG = true;
+        % t0str = append('SC[0].AC.Whl[0].Tcmd = ',mat2str(t_com(1)/100));
+        % t1str = append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2)/100));
+        % t2str = append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3)/100));
+        % RETURNMSG = true;
     end
     %% Send commands
 
     write(t,'Ack')
 
     if RETURNMSG == true
-        writeline(t,t0str)
-        writeline(t,t1str)
-        writeline(t,t2str)
+        % writeline(t,t0str)
+        % writeline(t,t1str)
+        % writeline(t,t2str)
     end
 
     writeline(t,'[EOF]')
@@ -232,17 +232,36 @@ if simplots == true
         Pvec(i,:) = sqrt(nav.P_history(i,i,:));
     end
 
+    load("Missions/AlexResearch42/sim_results/qbn.42")
+    len = size(qbn);
+    MRPtruth = zeros(len(1),3);
+
+    addpath("ALGORITHM/transforms/")
+
+    for i = 1:len(1)
+        MRPtruth(i,:) = (1/(1+qbn(i,4)))*[qbn(i,1) qbn(i,2) qbn(i,3)];
+    end    
+
     figure
     t = tiledlayout(3,1);
     title(t,'Estimated (MRP)')
     nexttile
     plot(tt,pvec(1,:))
+    hold on
+    plot(1:len(1),MRPtruth(:,1)')
+    hold off
     grid on
     nexttile
     plot(tt,pvec(2,:))
+    hold on
+    plot(1:len(1),MRPtruth(:,2)')
+    hold off
     grid on
     nexttile
     plot(tt,pvec(3,:))
+    hold on
+    plot(1:len(1),MRPtruth(:,3)')
+    hold off
     grid on
 
     figure
@@ -258,3 +277,4 @@ if simplots == true
     plot(tt,bvec(3,:))
     grid on
 end
+
