@@ -127,6 +127,9 @@ while its <= itsmax
         gps_inter = replace(GPSposstr,'e+0','e');
         gps_inter2 = replace(gps_inter,'e-0','e-');
         gps_pos = str2num(gps_inter2{1}(gpsindex:end))';
+        
+        disp(its)
+        disp(st_str)
 
         st_inter = replace(st_str,'e+0','e');
         st_inter2 = replace(st_inter,'e-0','e-');
@@ -239,7 +242,12 @@ if simplots == true
     addpath("ALGORITHM/transforms/")
 
     for i = 1:len(1)
-        MRPtruth(i,:) = (1/(1+qbn(i,4)))*[qbn(i,1) qbn(i,2) qbn(i,3)];
+        conv = (1/(1+qbn(i,4)))*[qbn(i,1) qbn(i,2) qbn(i,3)];
+        if norm(conv) >= 1.0
+            MRPtruth(i,:) = conv*(-1/(conv'*conv));
+        else
+            MRPtruth(i,:) = conv;
+        end    
     end    
 
     figure
@@ -248,21 +256,21 @@ if simplots == true
     nexttile
     plot(tt,pvec(1,:))
     hold on
-    plot(1:len(1),MRPtruth(:,1)')
+    plot(0:len(1)-1,MRPtruth(:,1)')
     legend('Estimate','Truth')
     hold off
     grid on
     nexttile
     plot(tt,pvec(2,:))
     hold on
-    plot(1:len(1),MRPtruth(:,2)')
+    plot(0:len(1)-1,MRPtruth(:,2)')
     legend('Estimate','Truth')
     hold off
     grid on
     nexttile
     plot(tt,pvec(3,:))
     hold on
-    plot(1:len(1),MRPtruth(:,3)')
+    plot(0:len(1)-1,MRPtruth(:,3)')
     legend('Estimate','Truth')
     hold off
     grid on
@@ -288,13 +296,13 @@ if simplots == true
     t = tiledlayout(3,1);
     title(t,"Angular velocity, rad/s")
     nexttile
-    plot(1:len(1),wbn(:,1)')
+    plot(0:len(1)-1,wbn(:,1)')
     grid on 
     nexttile
-    plot(1:len(1),wbn(:,2)')
+    plot(0:len(1)-1,wbn(:,2)')
     grid on 
     nexttile
-    plot(1:len(1),wbn(:,3)')
+    plot(0:len(1)-1,wbn(:,3)')
     grid on 
 end
 

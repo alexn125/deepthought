@@ -17,7 +17,7 @@ Attitude:
   Ang Vel Frame: N
   Att Representation: Q
   Att Frame: N
-  Ang Vel: [-0.00349065850398866, 0.00349065850398866, 0.00349065850398866]
+  Ang Vel: [-0.2, 0.2, 0.2]
   Quaternion: [0.0, 0.198019801980198, 0.0, 0.98019801980198]
   Euler Angles:
     Angles: [0.0, 0.0, 0.0]
@@ -140,9 +140,9 @@ STs:
       Index: 0
       Sample Time: 1.0
       Mounting Angles: 
-        Angles: [0.0,90.0,0.0]
+        Angles: [0.0,0.0,0.0]
         Sequence: 321
-      Boresight Axis: Y_AXIS
+      Boresight Axis: X_AXIS
       FOV Size: [90.0,90.0]
       Exclusion Angles:
         Earth: 0.0
