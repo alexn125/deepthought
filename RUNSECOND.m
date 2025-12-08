@@ -17,7 +17,7 @@ trueattindex = 16;
 avindex = 16;
 sunindex = 16;
 
-itsmax = 3001;
+itsmax = 1001;
 its = 1;
 gnccount = 1;
 RETURNMSG = false;
@@ -249,18 +249,21 @@ if simplots == true
     plot(tt,pvec(1,:))
     hold on
     plot(1:len(1),MRPtruth(:,1)')
+    legend('Estimate','Truth')
     hold off
     grid on
     nexttile
     plot(tt,pvec(2,:))
     hold on
     plot(1:len(1),MRPtruth(:,2)')
+    legend('Estimate','Truth')
     hold off
     grid on
     nexttile
     plot(tt,pvec(3,:))
     hold on
     plot(1:len(1),MRPtruth(:,3)')
+    legend('Estimate','Truth')
     hold off
     grid on
 
@@ -276,5 +279,22 @@ if simplots == true
     nexttile
     plot(tt,bvec(3,:))
     grid on
+    
+
+    load("Missions/AlexResearch42/sim_results/wbn.42")
+    len = size(wbn);
+    
+    figure
+    t = tiledlayout(3,1);
+    title(t,"Angular velocity, rad/s")
+    nexttile
+    plot(1:len(1),wbn(:,1)')
+    grid on 
+    nexttile
+    plot(1:len(1),wbn(:,2)')
+    grid on 
+    nexttile
+    plot(1:len(1),wbn(:,3)')
+    grid on 
 end
 

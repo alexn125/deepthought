@@ -10,13 +10,13 @@ Configuration:
   FSW Sample Time: 1.0
 Orbit:
   Prop Type: ENCKE
-  Pos Specifier: CM
+  Pos Specifier: ORIGIN
   Pos wrt F: [0.0, 0.0, 0.0]
   Vel wrt F: [0.0, 0.0, 0.0]
 Attitude:
   Ang Vel Frame: N
   Att Representation: Q
-  Att Frame: L
+  Att Frame: N
   Ang Vel: [-0.00349065850398866, 0.00349065850398866, 0.00349065850398866]
   Quaternion: [0.0, 0.198019801980198, 0.0, 0.98019801980198]
   Euler Angles:
