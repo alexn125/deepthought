@@ -17,7 +17,10 @@ trueattindex = 16;
 avindex = 16;
 sunindex = 16;
 
-itsmax = 36001;
+sim_length = 300;
+sim.rate = 10;
+
+itsmax = sim_length*sim.rate + 1;
 its = 1;
 gnccount = 1;
 RETURNMSG = false;
@@ -64,6 +67,8 @@ Kp = -1/20;
 Kd = -1/10;
 gains.Kp = Kp*eye(3,3);
 gains.Kd = Kd*eye(3,3);
+
+stvalidstr = strings(itsmax,1);
 
 %% GNC loop
 while its <= itsmax
@@ -235,6 +240,9 @@ if simplots == true
     pvec = nav.m_history(1:3,:);
     bvec = nav.m_history(4:6,:);
     tt = nav.t_history;
+    
+    time_vec = tt(1:2:end);
+
     Pvec = zeros(6,cnt);
     for i = 1:6
         Pvec(i,:) = sqrt(nav.P_history(i,i,:));
@@ -279,35 +287,62 @@ if simplots == true
     legend('Estimate','Truth')
     hold off
     grid on
+    
+    evec = zeros(3,length(time_vec));
+
+    for i = 1:length(time_vec)
+        evec(:,i) = MRPtruth(i,:)' - pvec(:,2*i-1);
+    end  
 
     figure
     t = tiledlayout(3,1);
-    title(t,'Estimated bias')
+    title(t,'Attitude Error (truth - estimate) (MRP)')
     nexttile
-    plot(tt,bvec(1,:))
+    plot(time_vec,evec(1,:))
+    hold on
+    plot(tt,3*Pvec(1,:),tt,-3*Pvec(1,:))
+    hold off
     grid on
     nexttile
-    plot(tt,bvec(2,:))
+    plot(time_vec,evec(2,:))
+    hold on
+    plot(tt,3*Pvec(2,:),tt,-3*Pvec(2,:))
+    hold off
     grid on
     nexttile
-    plot(tt,bvec(3,:))
+    plot(time_vec,evec(3,:))
+    hold on
+    plot(tt,3*Pvec(3,:),tt,-3*Pvec(3,:))
+    hold off
     grid on
-    
 
-    load("Missions/AlexResearch42/sim_results/wbn.42")
-    len = size(wbn);
+    % figure
+    % t = tiledlayout(3,1);
+    % title(t,'Estimated bias')
+    % nexttile
+    % plot(tt,bvec(1,:))
+    % grid on
+    % nexttile
+    % plot(tt,bvec(2,:))
+    % grid on
+    % nexttile
+    % plot(tt,bvec(3,:))
+    % grid on
     
-    figure
-    t = tiledlayout(3,1);
-    title(t,"Angular velocity, rad/s")
-    nexttile
-    plot(0:len(1)-1,wbn(:,1)')
-    grid on 
-    nexttile
-    plot(0:len(1)-1,wbn(:,2)')
-    grid on 
-    nexttile
-    plot(0:len(1)-1,wbn(:,3)')
-    grid on 
+    % load("Missions/AlexResearch42/sim_results/wbn.42")
+    % len = size(wbn);
+    % 
+    % figure
+    % t = tiledlayout(3,1);
+    % title(t,"Truth angular velocity, rad/s")
+    % nexttile
+    % plot(0:len(1)-1,wbn(:,1)')
+    % grid on 
+    % nexttile
+    % plot(0:len(1)-1,wbn(:,2)')
+    % grid on 
+    % nexttile
+    % plot(0:len(1)-1,wbn(:,3)')
+    % grid on 
 end
 
