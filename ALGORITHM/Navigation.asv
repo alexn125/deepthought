@@ -42,8 +42,7 @@ if norm(pkm) > 1.0
     % pkm = mkm(1:3);
     % bkm = mkm(4:6);
 end
-
-if meas.valid == 0 %propagate only
+if att_vaild == false
     mkp = mkm;
     Pkp = Pkm;
 else

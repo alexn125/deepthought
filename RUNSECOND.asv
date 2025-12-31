@@ -247,9 +247,9 @@ if simplots == true
     addpath("ALGORITHM/transforms/")
 
     for i = 1:len(1)
-        conv = (1/(1+qbn(i,4)))*[qbn(i,1); qbn(i,2); qbn(i,3)];
+        conv = (1/(1+qbn(i,4)))*[qbn(i,1) qbn(i,2) qbn(i,3)];
         if norm(conv) >= 1.0
-            MRPtruth(i,:) = conv*(-1./(conv'*conv));
+            MRPtruth(i,:) = conv*(-1/(conv'*conv));
         else
             MRPtruth(i,:) = conv;
         end    
@@ -257,7 +257,7 @@ if simplots == true
 
     figure
     t = tiledlayout(3,1);
-    title(t,'Truth vs. Estimated Attitude (MRP)')
+    title(t,'Estimated (MRP)')
     nexttile
     plot(tt,pvec(1,:))
     hold on
