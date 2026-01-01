@@ -17,8 +17,8 @@ trueattindex = 16;
 avindex = 16;
 sunindex = 16;
 
-sim_length = 300;
-sim.rate = 10;
+sim_length = 1000;
+sim.rate = 10; %Hz
 
 itsmax = sim_length*sim.rate + 1;
 its = 1;
@@ -61,6 +61,8 @@ nav.t_history = zeros(1,2*11);
 nav.m_history(:,1) = m0;
 nav.P_history(:,:,1) = P0;
 
+stcount = 1;
+
 %% Control gains
 
 Kp = -1/20;
@@ -69,6 +71,7 @@ gains.Kp = Kp*eye(3,3);
 gains.Kd = Kd*eye(3,3);
 
 stvalidstr = strings(itsmax,1);
+stvec = zeros(sim_time+1,1);
 
 %% GNC loop
 while its <= itsmax
@@ -90,7 +93,7 @@ while its <= itsmax
     gyro2str = readline(t);
     gyro3str = readline(t);
     % Star tracker
-    stvalidstr = readline(t); % valid
+    stvalidstr(its) = readline(t); % valid
     st_str = readline(t);
     % GPS
     for i = 1:14
@@ -100,7 +103,7 @@ while its <= itsmax
             readline(t);
         end
     end
-    
+
     % Accelerometers
     acc1str = readline(t);
     acc2str = readline(t);
@@ -132,8 +135,8 @@ while its <= itsmax
         gps_inter = replace(GPSposstr,'e+0','e');
         gps_inter2 = replace(gps_inter,'e-0','e-');
         gps_pos = str2num(gps_inter2{1}(gpsindex:end))';
-        
-        disp(its)
+
+        % disp(its)
         % disp(st_str)
 
         st_inter = replace(st_str,'e+0','e');
@@ -163,12 +166,16 @@ while its <= itsmax
         end
 
         meas.valid = false;
-        if strcmp(stvalidstr,"SC[0].AC.ST[0].Valid = 1")
+        if strcmp(stvalidstr(its),"SC[0].AC.ST[0].Valid = 1")
             meas.valid = true;
+            stvec(stcount) = NaN;
+        else
+            stvec(stcount) = 0;
         end
+        stcount = stcount + 1;
 
         [~,~,mkm,Pkm,mkp,Pkp] = Navigation(est,meas,noise,sim_time,dt);
-        
+
         est.mkm = mkm;
         est.Pkm = Pkm;
         est.mkp = mkp;
@@ -198,10 +205,10 @@ while its <= itsmax
         % triad.MRP_des = MRP_des;
 
         % disp(quat_des)
-        
+
         % triad.quat_des = zeros(4,1);
         % triad.MRP_des = zeros(3,1);
-        
+
         % w_des = [0;0;0];
 
         % t_com = Control(gains,triad,est,w_des,meas);
@@ -211,9 +218,9 @@ while its <= itsmax
         Pkm1 = Pkp;
         est.mkm1 = mkm1;
         est.Pkm1 = Pkm1;
-        
+
         %% Process commands
-        
+
         % t0str = append('SC[0].AC.Whl[0].Tcmd = ',mat2str(t_com(1)/100));
         % t1str = append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2)/100));
         % t2str = append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3)/100));
@@ -240,7 +247,7 @@ if simplots == true
     pvec = nav.m_history(1:3,:);
     bvec = nav.m_history(4:6,:);
     tt = nav.t_history;
-    
+
     time_vec = tt(1:2:end);
 
     Pvec = zeros(6,cnt);
@@ -260,8 +267,8 @@ if simplots == true
             MRPtruth(i,:) = conv*(-1./(conv'*conv));
         else
             MRPtruth(i,:) = conv;
-        end    
-    end    
+        end
+    end
 
     figure
     t = tiledlayout(3,1);
@@ -287,34 +294,64 @@ if simplots == true
     legend('Estimate','Truth')
     hold off
     grid on
-    
+
     evec = zeros(3,length(time_vec));
 
     for i = 1:length(time_vec)
         evec(:,i) = MRPtruth(i,:)' - pvec(:,2*i-1);
-    end  
+    end
 
     figure
     t = tiledlayout(3,1);
-    title(t,'Attitude Error (truth - estimate) (MRP)')
+    title(t,'Attitude Error (truth - estimate) and 3 sigma covariance (MRP)')
     nexttile
     plot(time_vec,evec(1,:))
     hold on
-    plot(tt,3*Pvec(1,:),tt,-3*Pvec(1,:))
+    plot(tt,3*Pvec(1,:),'r',tt,-3*Pvec(1,:),'r')
+    legend('MRP 1','$+3\sigma$','$-3\sigma$','Interpreter','latex');
+    legend()
     hold off
     grid on
     nexttile
     plot(time_vec,evec(2,:))
     hold on
-    plot(tt,3*Pvec(2,:),tt,-3*Pvec(2,:))
+    plot(tt,3*Pvec(2,:),'r',tt,-3*Pvec(2,:),'r')
+    legend('MRP 2','$+3\sigma$','$-3\sigma$','Interpreter','latex');
     hold off
     grid on
     nexttile
     plot(time_vec,evec(3,:))
     hold on
-    plot(tt,3*Pvec(3,:),tt,-3*Pvec(3,:))
+    plot(tt,3*Pvec(3,:),'r',tt,-3*Pvec(3,:),'r')
+    legend('MRP 3','$+3\sigma$','$-3\sigma$','Interpreter','latex');
     hold off
     grid on
+
+    figure
+    t = tiledlayout(3,1);
+    title(t,'Attitude Estimation Error (MRP) and Star Tracker Measurement Validity')
+    nexttile
+    plot(time_vec,evec(1,:))
+    hold on
+    scatter(time_vec,stvec,'r','x')
+    legend('MRP 1 Error','ST Invalid')
+    hold off
+    grid on
+    nexttile
+    plot(time_vec,evec(2,:))
+    hold on
+    scatter(time_vec,stvec,'r','x')
+    legend('MRP 2 Error','ST Invalid')
+    hold off
+    grid on
+    nexttile
+    plot(time_vec,evec(3,:))
+    hold on
+    scatter(time_vec,stvec,'r','x')
+    legend('MRP 3 Error','ST Invalid')
+    hold off
+    grid on
+
 
     % figure
     % t = tiledlayout(3,1);
@@ -328,21 +365,21 @@ if simplots == true
     % nexttile
     % plot(tt,bvec(3,:))
     % grid on
-    
+
     % load("Missions/AlexResearch42/sim_results/wbn.42")
     % len = size(wbn);
-    % 
+    %
     % figure
     % t = tiledlayout(3,1);
     % title(t,"Truth angular velocity, rad/s")
     % nexttile
     % plot(0:len(1)-1,wbn(:,1)')
-    % grid on 
+    % grid on
     % nexttile
     % plot(0:len(1)-1,wbn(:,2)')
-    % grid on 
+    % grid on
     % nexttile
     % plot(0:len(1)-1,wbn(:,3)')
-    % grid on 
+    % grid on
 end
 
