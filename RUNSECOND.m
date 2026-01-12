@@ -244,5 +244,7 @@ while its <= itsmax
 end
 
 addpath("GNCout/SIM_ALL_STUFF/")
+clear t
+load("Missions/AlexResearch42/sim_results/qbn.42")
 save('GNCout/SIM_ALL_STUFF/results.mat')
 

@@ -106,22 +106,25 @@ t = tiledlayout(3,1);
 title(t,'Attitude Estimation Error (MRP) and Star Tracker Measurement Validity')
 nexttile
 plot(time_vec,evec(1,:))
+ylim([-0.1 0.1])
 hold on
-scatter(time_vec,stvec,'r','x')
+scatter(time_vec,stvec+0.05,5,'r','x')
 legend('MRP 1 Error','ST Invalid','Location','best')
 hold off
 grid on
 nexttile
 plot(time_vec,evec(2,:))
+ylim([-0.1 0.1])
 hold on
-scatter(time_vec,stvec,'r','x')
+scatter(time_vec,stvec+0.05,5,'r','x')
 legend('MRP 2 Error','ST Invalid','Location','best')
 hold off
 grid on
 nexttile
 plot(time_vec,evec(3,:))
+ylim([-0.1 0.1])
 hold on
-scatter(time_vec,stvec,'r','x')
+scatter(time_vec,stvec+0.05,5,'r','x')
 legend('MRP 3 Error','ST Invalid','Location','best')
 hold off
 grid on
