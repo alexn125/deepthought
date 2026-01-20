@@ -36,19 +36,7 @@ end
 
 figure
 t = tiledlayout(4,1);
-title(t,'Truth Attitude, Quaternions')
-nexttile
-plot(time_vec, qbn(:,1))
-ylabel('q1')
-nexttile
-plot(time_vec, qbn(:,2))
-ylabel('q2')
-nexttile
-plot(time_vec, qbn(:,3))
-ylabel('q3')
-nexttile
-plot(time_vec, qbn(:,4))
-ylabel('Scalar part')
+title(t,'')
 
 figure
 t = tiledlayout(3,1);
@@ -184,18 +172,18 @@ grid on
 % legend('Estimated','Truth')
 % grid on
 
-load("Missions/AlexResearch42/sim_results/wbn.42")
-len = size(wbn);
-
-figure
-t = tiledlayout(3,1);
-title(t,"Truth angular velocity, rad/s")
-nexttile
-plot(0:len(1)-1,wbn(:,1)')
-grid on
-nexttile
-plot(0:len(1)-1,wbn(:,2)')
-grid on
-nexttile
-plot(0:len(1)-1,wbn(:,3)')
-grid on
+% load("Missions/AlexResearch42/sim_results/wbn.42")
+% len = size(wbn);
+%
+% figure
+% t = tiledlayout(3,1);
+% title(t,"Truth angular velocity, rad/s")
+% nexttile
+% plot(0:len(1)-1,wbn(:,1)')
+% grid on
+% nexttile
+% plot(0:len(1)-1,wbn(:,2)')
+% grid on
+% nexttile
+% plot(0:len(1)-1,wbn(:,3)')
+% grid on

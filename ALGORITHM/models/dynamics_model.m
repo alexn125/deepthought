@@ -10,8 +10,8 @@ B = (1-p'*p)*eye(3,3) + 2*skew(p) + 2*(p*p');
 % integrate mean
 
 f = [(1/4)*B*(w_meas-b);zeros(3,1)];
-% g = [(-1/4)*B*eta1;eta2];
-g = zeros(6,1);
+g = [(-1/4)*B*eta1;eta2];
+% g = zeros(6,1);
 mdot = f+g;
 
 % inner = 0.5*(1-p'*p)*eye(3) + skew(p) + p*p';
@@ -27,4 +27,4 @@ Pdot = F*P + P*F' + G*0.01*G' + Q;
 
 xdot = [mdot;Pdot(:)];
 
-end
+end 
