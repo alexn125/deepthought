@@ -70,8 +70,11 @@ Kd = -1/10;
 gains.Kp = Kp*eye(3,3);
 gains.Kd = Kd*eye(3,3);
 
+%% Some preallocation
+
 stvalidstr = strings(itsmax,1);
 stvec = zeros(sim_time+1,1);
+triadhistory = zeros(4,sim_time+1);
 
 %% GNC loop
 while its <= itsmax
@@ -154,7 +157,7 @@ while its <= itsmax
         s1 = replace(sunpntstr_in,'e+0','e');
         s2 = replace(s1,'e-0','e-');
         sunpnt_true = str2num(s2{1}(sunindex:end))';
-        disp(sunpnt_true)
+
         if t.NumBytesAvailable <= 1
             RETURNMSG = true;
         end
@@ -172,7 +175,7 @@ while its <= itsmax
         else
             stvec(stcount) = 0;
         end
-        stcount = stcount + 1;
+        
 
         [~,~,mkm,Pkm,mkp,Pkp] = Navigation(est,meas,noise,sim_time,dt);
 
@@ -194,19 +197,19 @@ while its <= itsmax
             nav.t_history(:,cnt) = sim_time+dt;
         end
 
-        body1 = [0;1;0];
-        body2 = [0;0;1];
+        body1 = [1.0;0.0;0.0];
+        body2 = [0.0;1.0;0.0];
 
         % disp(gps_pos/norm(gps_pos))
 
-        % [~,MRP_des] = Guidance(gps_pos,sunpnt_true,body1,body2);
+        [quat_des,MRP_des] = Guidance(gps_pos,sunpnt_true,body1,body2);
 
-        % triad.quat_des = quat_des;
+        triad.quat_des = quat_des;
         % triad.MRP_des = MRP_des;
 
         % disp(quat_des)
 
-        % triad.quat_des = zeros(4,1);
+        triadhistory(:,stcount) = triad.quat_des;
         % triad.MRP_des = zeros(3,1);
 
         % w_des = [0;0;0];
@@ -225,6 +228,10 @@ while its <= itsmax
         % t1str = append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2)/100));
         % t2str = append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3)/100));
         % RETURNMSG = true;
+        
+        %% Index iteration
+        stcount = stcount + 1;
+
     end
     %% Send commands
 

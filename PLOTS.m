@@ -199,3 +199,19 @@ grid on
 nexttile
 plot(0:len(1)-1,wbn(:,3)')
 grid on
+
+figure
+t = tiledlayout(4,1);
+title(t, "Desired attitude from TRIAD method")
+nexttile
+plot(time_vec, triadhistory(2,:))
+ylabel('q1')
+nexttile
+plot(time_vec, triadhistory(3,:))
+ylabel('q2')
+nexttile
+plot(time_vec, triadhistory(4,:))
+ylabel('q3')
+nexttile
+plot(time_vec, triadhistory(1,:))
+ylabel('Scalar part')
