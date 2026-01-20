@@ -154,7 +154,7 @@ while its <= itsmax
         s1 = replace(sunpntstr_in,'e+0','e');
         s2 = replace(s1,'e-0','e-');
         sunpnt_true = str2num(s2{1}(sunindex:end))';
-
+        disp(sunpnt_true)
         if t.NumBytesAvailable <= 1
             RETURNMSG = true;
         end
