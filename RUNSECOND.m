@@ -65,8 +65,8 @@ stcount = 1;
 
 %% Control gains
 
-Kp = -1/20;
-Kd = -1/10;
+Kp = -1/100;
+Kd = -1/200;
 gains.Kp = Kp*eye(3,3);
 gains.Kd = Kd*eye(3,3);
 
@@ -75,6 +75,7 @@ gains.Kd = Kd*eye(3,3);
 stvalidstr = strings(itsmax,1);
 stvec = zeros(sim_time+1,1);
 triadhistory = zeros(4,sim_time+1);
+commandhistory = zeros(3,sim_time+1);
 
 %% GNC loop
 while its <= itsmax
@@ -205,16 +206,18 @@ while its <= itsmax
         [quat_des,MRP_des] = Guidance(gps_pos,sunpnt_true,body1,body2);
 
         triad.quat_des = quat_des;
-        % triad.MRP_des = MRP_des;
+        triad.MRP_des = MRP_des;
 
         % disp(quat_des)
 
         triadhistory(:,stcount) = triad.quat_des;
         % triad.MRP_des = zeros(3,1);
 
-        % w_des = [0;0;0];
+        w_des = [0;0;0];
 
-        % t_com = Control(gains,triad,est,w_des,meas);
+        t_com = Control(gains,triad,est,w_des,meas);
+        
+        commandhistory(:,stcount) = t_com;
 
         %% set navigation indices for next time
         mkm1 = mkp;
@@ -224,10 +227,10 @@ while its <= itsmax
 
         %% Process commands
 
-        % t0str = append('SC[0].AC.Whl[0].Tcmd = ',mat2str(t_com(1)/100));
-        % t1str = append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2)/100));
-        % t2str = append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3)/100));
-        % RETURNMSG = true;
+        t0str = append('SC[0].AC.Whl[0].Tcmd = ',mat2str(t_com(1)));
+        t1str = append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2)));
+        t2str = append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3)));
+        RETURNMSG = true;
         
         %% Index iteration
         stcount = stcount + 1;
@@ -235,16 +238,16 @@ while its <= itsmax
     end
     %% Send commands
 
-    write(t,'Ack')
-
+    % writeline(t,'Ack')
+    % disp(its)
     if RETURNMSG == true
-        % writeline(t,t0str)
-        % writeline(t,t1str)
-        % writeline(t,t2str)
+        writeline(t,t0str)
+        writeline(t,t1str)
+        writeline(t,t2str)
     end
-
+    writeline(t,'Ack')
     writeline(t,'[EOF]')
-
+    % disp(t)
     its = its + 1;
     gnccount = gnccount + 1;
     RETURNMSG = false;
@@ -253,5 +256,6 @@ end
 addpath("GNCout/SIM_ALL_STUFF/")
 clear t
 load("Missions/AlexResearch42/sim_results/qbn.42")
+load("Missions/AlexResearch42/sim_results/wbn.42")
 save('GNCout/SIM_ALL_STUFF/results.mat')
 

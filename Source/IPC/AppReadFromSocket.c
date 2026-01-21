@@ -33,11 +33,12 @@ void ReadFromSocket(SOCKET Socket, struct AcType *AC)
 
       Done = 0;
       Imsg = 0;
+      long ImsgLimit = 1e6;
       while(!Done) {
          /* Parse lines from Msg, newline-delimited */
          Iline = 0;
          memset(line,'\0',512);
-         while((Msg[Imsg] != '\n') && (Iline < 511) && (Imsg < 16383)) {
+         while((Msg[Imsg] != '\n') && (Iline < 511) && (Imsg < ImsgLimit)) {
             line[Iline++] = Msg[Imsg++];
          }
          line[Iline++] = Msg[Imsg++];
@@ -1384,10 +1385,10 @@ void ReadFromSocket(SOCKET Socket, struct AcType *AC)
             Done = 1;
             sprintf(line,"[EOF] reached\n");
          }
-         if (Imsg >= 16383) {
-            Done = 1;
-            printf("Imsg limit exceeded\n");
-         }
+         // if (Imsg >= ImsgLimit) {
+         //    Done = 1;
+         //    printf("Imsg limit exceeded\n");
+         // }
       }
 
       /* Acknowledge receipt */

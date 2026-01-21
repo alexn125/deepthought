@@ -19,7 +19,7 @@ for i = 1:6
     Pvec(i,:) = sqrt(nav.P_history(i,i,:));
 end
 
-load("Missions/AlexResearch42/sim_results/qbn.42")
+% load("Missions/AlexResearch42/sim_results/qbn.42")
 len = size(qbn);
 MRPtruth = zeros(len(1),3);
 
@@ -184,7 +184,7 @@ grid on
 % legend('Estimated','Truth')
 % grid on
 
-load("Missions/AlexResearch42/sim_results/wbn.42")
+% load("Missions/AlexResearch42/sim_results/wbn.42")
 len = size(wbn);
 
 figure
@@ -215,3 +215,16 @@ ylabel('q3')
 nexttile
 plot(time_vec, triadhistory(1,:))
 ylabel('Scalar part')
+
+figure
+t = tiledlayout(3,1);
+title(t, "Torque Commands over time")
+nexttile
+plot(time_vec, commandhistory(1,:))
+ylabel('u1')
+nexttile
+plot(time_vec, commandhistory(2,:))
+ylabel('u2')
+nexttile
+plot(time_vec, commandhistory(3,:))
+ylabel('u3')
