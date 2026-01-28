@@ -46,8 +46,8 @@ qdes = [0;0;0;1];
 wdes = [0;0;0];
 u_applied = u_applied_0;
 
-K = 0.00001*eye(3,3);
-P = 0.003*eye(3,3);
+K = 0.01;
+P = 0.03;
 
 tnow = 0.0;
 
@@ -81,46 +81,30 @@ for i = 1:length(tspan)
     
     DCM = eye(3,3) + (8*skew(MRPk)*skew(MRPk) - 4*(1-s2)*skew(MRPk))/((1+s2)^2);
     
-    disp(DCM)
-
-    rkhat = rk/(norm(rk));
+    rkhat = rk./(norm(rk));
     vkest = (rk - rkm1)/dt;
-    vkhat = vkest/(norm(vkest));
+    vkhat = vkest./(norm(vkest));
     hhat = cross(rkhat,vkhat);
 
     w_des = ((2*pi)/period)*DCM*hhat;
-  
+    
+    
+
     % control
 
     % qerror = qk - qdes;
     % w_error = wk - wdes;
     % u_applied = -1*(Kp*(qerror(1:3)/qerror(4)) + Kd*w_error);
-    % u_applied = -1*(P*wk + K*MRPk);
+    u_applied = -1*(P*wk + K*MRPk);
     % u_applied = -1*(Kp*qk(1:3) + Kd*w_error);
     % u_applied = [0;0;0];
     
-    k_term = -1*K*MRPk;
-    p_term = -1*P*(wk-w_des);
-    other_term = eye(3,3)*(w_dot_des - skew(wk)*w_des) + skew(w_des)*eye(3,3)*wk;
-    u_applied = k_term + p_term + other_term;
-    % u_applied = -1*K*MRPk - P*(wk-w_des) + eye(3,3)*(w_dot_des - skew(wk)*w_des) + skew(w_des)*eye(3,3)*wk;
-    
-    % disp("K term")
-    % disp(k_term)
-    % disp("P term")
-    % disp(p_term)
-    % disp("other stuff")
-    % disp(other_term)
-    % disp('-----------------------------')
-
     if i < length(tspan)
         % qvec(:,i+1) = qk;
         svec(:,i+1) = MRPk;
         wvec(:,i+1) = wk;
         posvec(:,i+1) = rk;
         velvec(:,i+1) = vk;
-        torquevec(:,i+1) = u_applied;
-        wdesvec(:,i+1) = w_des;
     end
 
     % for next time
@@ -129,6 +113,7 @@ for i = 1:length(tspan)
     xkm1 = [MRPk;wk];
     rkm1 = rk;
     vkm1 = vk;
+    
     tnow = tnow + dt;
 end
 % qout = transpose(xout(:,1:4));
@@ -170,29 +155,18 @@ figure
 t = tiledlayout(3,1);
 title(t,'applied torque')
 nexttile
-plot(tspan,torquevec(1,:))
+plot(tspan,torquevec(1,1:end-1))
 nexttile
-plot(tspan,torquevec(2,:))
+plot(tspan,torquevec(2,1:end-1))
 nexttile
-plot(tspan,torquevec(3,:))
-
-% figure
-% title('Position')
-% plot3(posvec(1,:),posvec(2,:),posvec(3,:))
-% hold on
-% scatter3(0,0,0)
-% hold off
+plot(tspan,torquevec(3,1:end-1))
 
 figure
-t = tiledlayout(3,1);
-title(t,'desired angular velocity')
-nexttile
-plot(tspan,wdesvec(1,:))
-nexttile
-plot(tspan,wdesvec(2,:))
-nexttile
-plot(tspan,wdesvec(3,:))
-
+title('Position')
+plot3(posvec(1,:),posvec(2,:),posvec(3,:))
+hold on
+scatter3(0,0,0)
+hold off
 % function xdot = attEOMS(~,x,I,u_applied)
 % % vector first
 % E = x(1:3);
@@ -248,7 +222,6 @@ function xdot = PVEOMS(~,x,mu)
     xdot(1:3) = v;
     xdot(4:6) = ((-1*mu)/((norm(r))^3))*r;
 end
-
-function ax = skew(a)
-        ax = [0 -a(3) a(2); a(3) 0 -a(1);-a(2) a(1) 0];
-end
+% function ax = skew(a)
+%         ax = [0 -a(3) a(2); a(3) 0 -a(1);-a(2) a(1) 0];
+% end
