@@ -13,11 +13,11 @@ q0 = [0.0, 0.198019801980198, 0.0, 0.98019801980198]';
 % q0 = q0./norm(q0);
 % s0 = [-0.3;-0.4;0.2];
 s0 = [0;0.1;0];
-w0 = [-0.2;0.2;0.2]*(pi/180);
-% w0 = zeros(3,1);
+% w0 = [-0.2;0.2;0.2]*(pi/180);
+w0 = zeros(3,1);
 
 dt = 1;
-sim.end = 3600;
+sim.end = 36000;
 tspan = 0:dt:sim.end;
 
 I = [0.026 0 0;0 0.06 0; 0 0 0.085];
@@ -33,6 +33,8 @@ timevec = zeros(1,length(tspan));
 % qvec = zeros(4,length(tspan));
 svec = zeros(3,length(tspan));
 wvec = zeros(3,length(tspan));
+w_inervec = zeros(3,length(tspan));
+w_desinervec = zeros(3,length(tspan));
 torquevec = zeros(3, length(tspan));
 posvec = zeros(3,length(tspan));
 velvec = zeros(3,length(tspan));
@@ -46,8 +48,8 @@ qdes = [0;0;0;1];
 wdes = [0;0;0];
 u_applied = u_applied_0;
 
-K = 0.00001*eye(3,3);
-P = 0.003*eye(3,3);
+K = 0.0*eye(3,3);
+P = 0.03*eye(3,3);
 
 tnow = 0.0;
 
@@ -59,6 +61,8 @@ velvec(:,1) = initvel;
 wdesvec(:,1) = wdes;
 rkm1 = initpos;
 vkm1 = initvel;
+
+angvec = zeros(1,length(tspan));
 
 % Run the simulation using ode45
 for i = 1:length(tspan)
@@ -77,19 +81,21 @@ for i = 1:length(tspan)
     s2 = MRPk'*MRPk;
     if s2>1.0
         MRPk = (-1*MRPk) / s2; % shadowset
+        s2 = MRPk'*MRPk;
     end    
     
     DCM = eye(3,3) + (8*skew(MRPk)*skew(MRPk) - 4*(1-s2)*skew(MRPk))/((1+s2)^2);
     
-    disp(DCM)
+    % disp(DCM)
 
     rkhat = rk/(norm(rk));
     vkest = (rk - rkm1)/dt;
     vkhat = vkest/(norm(vkest));
     hhat = cross(rkhat,vkhat);
 
-    w_des = ((2*pi)/period)*DCM*hhat;
-  
+    % w_des = ((2*pi)/period)*transpose(DCM)*hhat;
+    % w_des = transpose(DCM)*((2*pi)/period)*hhat;
+    w_des = transpose(DCM)*cross(rk,vkest)/(norm(rk)*norm(rk));
     % control
 
     % qerror = qk - qdes;
@@ -101,8 +107,21 @@ for i = 1:length(tspan)
     
     k_term = -1*K*MRPk;
     p_term = -1*P*(wk-w_des);
-    other_term = eye(3,3)*(w_dot_des - skew(wk)*w_des) + skew(w_des)*eye(3,3)*wk;
+    other_term = eye(3,3)*(w_dot_des - skew(wk)*w_des) + skew(w_des)*eye(3,3)*wk; % Schaub 432
     u_applied = k_term + p_term + other_term;
+    
+    u_max = 8/1000; % mN-m
+
+    for j = 1:3
+        if abs(u_applied(j))>u_max
+            if u_applied(j)>0
+                u_applied(j) = u_max; 
+            else
+                u_applied(j) = -u_max; 
+            end
+        end    
+    end    
+   
     % u_applied = -1*K*MRPk - P*(wk-w_des) + eye(3,3)*(w_dot_des - skew(wk)*w_des) + skew(w_des)*eye(3,3)*wk;
     
     % disp("K term")
@@ -121,9 +140,19 @@ for i = 1:length(tspan)
         velvec(:,i+1) = vk;
         torquevec(:,i+1) = u_applied;
         wdesvec(:,i+1) = w_des;
+
+        w_inervec(:,i+1) = DCM'*wk;
+        w_desinervec(:,i+1) = ((2*pi)/period)*hhat;
     end
 
     % for next time
+
+    bx_1 = DCM*[1;0;0];
+    bx_1 = bx_1/norm(bx_1);
+    ECI_x = rk/norm(rk);
+
+    ang = acos(dot(bx_1,ECI_x));
+    angvec(i) = ang;
 
     % xkm1 = [qk;wk];
     xkm1 = [MRPk;wk];
@@ -158,13 +187,39 @@ plot(tspan,svec(3,:))
 
 figure
 t = tiledlayout(3,1);
-title(t,'angular velocity')
+title(t,'angular velocity vs desired angular velocity')
 nexttile
-plot(tspan,wvec(1,:))
+plot(tspan,wvec(1,:),tspan,wdesvec(1,:))
+legend('true','desired')
 nexttile
-plot(tspan,wvec(2,:))
+plot(tspan,wvec(2,:),tspan,wdesvec(2,:))
+legend('true','desired')
 nexttile
-plot(tspan,wvec(3,:))
+plot(tspan,wvec(3,:),tspan,wdesvec(3,:))
+legend('true','desired')
+
+figure
+t = tiledlayout(3,1);
+title(t,'angular velocity vs desired angular velocity, inertial frame')
+nexttile
+plot(tspan,w_inervec(1,:),tspan,w_desinervec(1,:))
+legend('true','desired')
+nexttile
+plot(tspan,w_inervec(2,:),tspan,w_desinervec(2,:))
+legend('true','desired')
+nexttile
+plot(tspan,w_inervec(3,:),tspan,w_desinervec(3,:))
+legend('true','desired')
+
+figure
+t = tiledlayout(3,1);
+title(t,'desired angular velocity error')
+nexttile
+plot(tspan,wvec(1,:)-wdesvec(1,:))
+nexttile
+plot(tspan,wvec(2,:)-wdesvec(2,:))
+nexttile
+plot(tspan,wvec(3,:)-wdesvec(3,:))
 
 figure
 t = tiledlayout(3,1);
@@ -184,14 +239,8 @@ plot(tspan,torquevec(3,:))
 % hold off
 
 figure
-t = tiledlayout(3,1);
-title(t,'desired angular velocity')
-nexttile
-plot(tspan,wdesvec(1,:))
-nexttile
-plot(tspan,wdesvec(2,:))
-nexttile
-plot(tspan,wdesvec(3,:))
+plot(tspan,angvec*(180/pi))
+title('Angle (Deg) between body x axis and ECI x axis')
 
 % function xdot = attEOMS(~,x,I,u_applied)
 % % vector first
