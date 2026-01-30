@@ -94,8 +94,8 @@ for i = 1:length(tspan)
     hhat = cross(rkhat,vkhat);
 
     % w_des = ((2*pi)/period)*transpose(DCM)*hhat;
-    % w_des = transpose(DCM)*((2*pi)/period)*hhat;
-    w_des = transpose(DCM)*cross(rk,vkest)/(norm(rk)*norm(rk));
+    w_des = transpose(DCM)*((2*pi)/period)*hhat;
+    % w_des = transpose(DCM)*cross(rk,vkest)/(norm(rk)*norm(rk));
     % control
 
     % qerror = qk - qdes;
