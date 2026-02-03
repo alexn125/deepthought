@@ -1385,10 +1385,10 @@ void ReadFromSocket(SOCKET Socket, struct AcType *AC)
             Done = 1;
             sprintf(line,"[EOF] reached\n");
          }
-         // if (Imsg >= ImsgLimit) {
-         //    Done = 1;
-         //    printf("Imsg limit exceeded\n");
-         // }
+         if (Imsg >= ImsgLimit) {
+            Done = 1;
+            printf("Imsg limit exceeded\n");
+         }
       }
 
       /* Acknowledge receipt */

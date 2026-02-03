@@ -3,7 +3,7 @@ close all
 clc
 
 addpath('ALGORITHM')
-
+addpath('RigidBodyKinematicsSchaubBook/Matlab/')
 d2r = pi/180;
 r2d = 180/pi;
 

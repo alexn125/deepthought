@@ -29,6 +29,7 @@ void ReadFromSocket(SOCKET Socket, long EchoEnabled)
       memset(Msg,'\0',16384);
       NumBytes = recv(Socket,Msg,16384,0);
       if (NumBytes <= 0) return; /* Bail out if no message */
+      // printf("heloo!\n");
 
       Done = 0;
       Imsg = 0;
@@ -39,6 +40,8 @@ void ReadFromSocket(SOCKET Socket, long EchoEnabled)
          while((Msg[Imsg] != '\n') && (Iline < 511) && (Imsg < 16383)) {
             line[Iline++] = Msg[Imsg++];
          }
+         // printf("Got line: %s\n",line);
+         // printf("Imsg = %ld\n",Imsg);
          line[Iline++] = Msg[Imsg++];
          if (EchoEnabled) printf("%s",line);
 
@@ -154,6 +157,7 @@ void ReadFromSocket(SOCKET Socket, long EchoEnabled)
                &Isc,&i,
                &DbleVal[0]) == 3) {
                SC[Isc].AC.Whl[i].Tcmd = DbleVal[0];
+               printf("%le\n",DbleVal[0]);
             }
 
             if (sscanf(line,"SC[%ld].AC.MTB[%ld].Mcmd = %le",

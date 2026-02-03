@@ -105,7 +105,9 @@ for i = 1:length(tspan)
     % u_applied = -1*(Kp*qk(1:3) + Kd*w_error);
     % u_applied = [0;0;0];
     
-    k_term = -1*K*MRPk;
+    % k_term = -1*K*MRPk;
+    addpath('RigidBodyKinematicsSchaubBook/Matlab/')
+    k_term = -1*K*subMRP(MRPk,MRPdes);
     p_term = -1*P*(wk-w_des);
     other_term = eye(3,3)*(w_dot_des - skew(wk)*w_des) + skew(w_des)*eye(3,3)*wk; % Schaub 432
     u_applied = k_term + p_term + other_term;
