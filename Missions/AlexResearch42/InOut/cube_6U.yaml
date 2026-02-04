@@ -95,7 +95,7 @@ Thrusters: []
 Gyros:
   - Gyro:
       Index: 0
-      Sample Time: 0.1
+      Sample Time: 1.0
       Axis: [1.0,0.0,0.0]
       Max Rate: 200.0
       Scale Factor: 0.0
@@ -108,7 +108,7 @@ Gyros:
       Node: 0
   - Gyro:
       Index: 1
-      Sample Time: 0.1
+      Sample Time: 1.0
       Axis: [0.0,1.0,0.0]
       Max Rate: 200.0
       Scale Factor: 0.0
@@ -121,7 +121,7 @@ Gyros:
       Node: 0
   - Gyro:
       Index: 2
-      Sample Time: 0.1
+      Sample Time: 1.0
       Axis: [0.0,0.0,1.0]
       Max Rate: 200.0
       Scale Factor: 0.0
@@ -161,7 +161,7 @@ GPSs:
 Accelerometers:
   - Accelerometer:
       Index: 0
-      Sample Time: 0.1
+      Sample Time: 1.0
       Axis: [1.0,0.0,0.0]
       Max Acceleration: 29.43
       Scale Factor: 0.0
@@ -174,7 +174,7 @@ Accelerometers:
       Node: 0
   - Accelerometer:
       Index: 1
-      Sample Time: 0.1
+      Sample Time: 1.0
       Axis: [0.0,1.0,0.0]
       Max Acceleration: 29.43
       Scale Factor: 0.0
@@ -187,7 +187,7 @@ Accelerometers:
       Node: 0
   - Accelerometer:
       Index: 2
-      Sample Time: 0.1
+      Sample Time: 1.0
       Axis: [0.0,0.0,1.0]
       Max Acceleration: 29.43
       Scale Factor: 0.0

@@ -1790,4 +1790,5 @@ void WriteToSocket(SOCKET Socket,  char **Prefix, long Nprefix, long EchoEnabled
 
       /* Wait for Ack */
       recv(Socket,AckMsg,5,0);
+      printf("%s\n",AckMsg);
 }

@@ -30,7 +30,7 @@ void ReadFromSocket(SOCKET Socket, long EchoEnabled)
       NumBytes = recv(Socket,Msg,16384,0);
       if (NumBytes <= 0) return; /* Bail out if no message */
       // printf("heloo!\n");
-
+      printf("%s\n",Msg);
       Done = 0;
       Imsg = 0;
       while(!Done) {
@@ -40,10 +40,10 @@ void ReadFromSocket(SOCKET Socket, long EchoEnabled)
          while((Msg[Imsg] != '\n') && (Iline < 511) && (Imsg < 16383)) {
             line[Iline++] = Msg[Imsg++];
          }
-         // printf("Got line: %s\n",line);
+         printf("Got line: %s\n",line);
          // printf("Imsg = %ld\n",Imsg);
          line[Iline++] = Msg[Imsg++];
-         if (EchoEnabled) printf("%s",line);
+         // if (EchoEnabled) printf("%s",line);
 
          if (sscanf(line,"TIME %ld-%ld-%ld:%ld:%lf\n",
             &Year,&doy,&Hour,&Minute,&Second) == 5) {
@@ -157,7 +157,6 @@ void ReadFromSocket(SOCKET Socket, long EchoEnabled)
                &Isc,&i,
                &DbleVal[0]) == 3) {
                SC[Isc].AC.Whl[i].Tcmd = DbleVal[0];
-               printf("%le\n",DbleVal[0]);
             }
 
             if (sscanf(line,"SC[%ld].AC.MTB[%ld].Mcmd = %le",

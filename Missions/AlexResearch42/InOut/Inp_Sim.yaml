@@ -3,7 +3,7 @@
 Simulation Control:
   Mode: FAST
   Duration: 3600.0
-  Step Size: 0.1
+  Step Size: 1.0
   File Interval: 1.0
   RNG Seed: 0
   Enable Graphics: false

@@ -58,14 +58,13 @@ while its < itsmax
     
 %% - COMMANDS
 
-    u = 1e-4*[2;4;-3];
-
-    l1 = double(append('SC[0].AC.Whl[0].Tcmd = ',mat2str(u(1))));
-    l2 = double(append('SC[0].AC.Whl[1].Tcmd = ',mat2str(u(2))));
-    l3 = double(append('SC[0].AC.Whl[2].Tcmd = ',mat2str(u(3))));
-    endmsg = double('[EOF]');
-    sending = [l1 10 l2 10 l3 10 endmsg];
-    write(t,cast(sending,"uint8"),"uint8")
+    l1 = 'SC[0].AC.Whl[0].Tcmd = 0.0001';
+    l2 = 'SC[0].AC.Whl[1].Tcmd = 0.0001';
+    l3 = 'SC[0].AC.Whl[2].Tcmd = 0.0001';
+    
+    B = double('SC[0].AC.Whl[0].Tcmd = 0.014');
+    disp(B())
+    write(t,cast(append(B,"10"),"uint8"),"uint8")
 
     its = its + 1;
     b = 1;

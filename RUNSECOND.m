@@ -161,9 +161,11 @@ while its <= itsmax
     s2 = replace(s1,'e-0','e-');
     sunpnt_true = str2num(s2{1}(sunindex:end))';
 
-    if t.NumBytesAvailable <= 1
-        RETURNMSG = true;
-    end
+    write(t,"Read!","uint8") % Ack message to Deepthought for "message recieved"
+
+    % if t.NumBytesAvailable <= 1
+    %     RETURNMSG = true;
+    % end
     %% Do GNC
 
     meas.MRP = zeros(3,1); % attitude measurement
@@ -244,30 +246,42 @@ while its <= itsmax
 
     %% Process commands
 
-    t0str = append('SC[0].AC.Whl[0].Tcmd = ',mat2str(t_com(1)));
-    t1str = append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2)));
-    t2str = append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3)));
-    RETURNMSG = true;
+    % t0str = append('SC[0].AC.Whl[0].Tcmd = ',mat2str(t_com(1)));
+    % t1str = append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2)));
+    % t2str = append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3)));
+    % RETURNMSG = true;
 
-    %% Index iteration
-    stcount = stcount + 1;
+    %% Send commands
+
+    l1 = double(append('SC[0].AC.Whl[0].Tcmd = ',mat2str(t_com(1))));
+    l2 = double(append('SC[0].AC.Whl[1].Tcmd = ',mat2str(t_com(2))));
+    l3 = double(append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3))));
+    endmsg = double('[EOF]');
+
+    sending = [l1 10 l2 10 l3 10 endmsg]; % 10 is ASCII newline character
+
+    write(t,cast(sending,"uint8"),"uint8")
 
     % end
-    %% Send commands
+    
 
     % writeline(t,'Ack')
     % disp(its)
-    if RETURNMSG == true
-        writeline(t,t0str)
-        writeline(t,t1str)
-        writeline(t,t2str)
-    end
-    writeline(t,'Ack')
-    writeline(t,'[EOF]')
+    % if RETURNMSG == true
+    %     writeline(t,t0str)
+    %     writeline(t,t1str)
+    %     writeline(t,t2str)
+    % end
+    % writeline(t,'Ack')
+    % writeline(t,'[EOF]')
     % disp(t)
+
+    %% Index iteration
+    stcount = stcount + 1;
     its = its + 1;
     gnccount = gnccount + 1;
     RETURNMSG = false;
+    
 end
 
 addpath("GNCout/SIM_ALL_STUFF/")
