@@ -5,6 +5,8 @@ clc
 mu = 398600441800000.0;
 a = 6794419.25330953;
 
+addpath('ALGORITHM/transforms/')
+
 period = 2*pi*sqrt((a^3)/mu);
 
 w_dot_des = [0;0;0];
@@ -17,7 +19,7 @@ s0 = [0;0.1;0];
 w0 = zeros(3,1);
 
 dt = 1;
-sim.end = 36000;
+sim.end = 50;
 tspan = 0:dt:sim.end;
 
 I = [0.026 0 0;0 0.06 0; 0 0 0.085];
@@ -39,6 +41,7 @@ torquevec = zeros(3, length(tspan));
 posvec = zeros(3,length(tspan));
 velvec = zeros(3,length(tspan));
 wdesvec = zeros(3,length(tspan));
+MRPdesvec = zeros(3,length(tspan));
 % qvec(:,1) = q0;
 svec(:,1) = s0;
 wvec(:,1) = w0;
@@ -48,7 +51,7 @@ qdes = [0;0;0;1];
 wdes = [0;0;0];
 u_applied = u_applied_0;
 
-K = 0.0*eye(3,3);
+K = 0.01*eye(3,3);
 P = 0.03*eye(3,3);
 
 tnow = 0.0;
@@ -64,9 +67,11 @@ vkm1 = initvel;
 
 angvec = zeros(1,length(tspan));
 
+load("triadhistory.mat");
+
 % Run the simulation using ode45
 for i = 1:length(tspan)
-    
+    disp(i)
     [~,pvout] = ode45(@(t,x) PVEOMS(t,x,mu),[tnow tnow+dt],[rkm1;vkm1]);
     % [~,xout] = ode45(@(t, x) attEOMS(t, x, I, u_applied),[tnow tnow+dt],xkm1);
     [~,xout] = ode45(@(t, x) MRPattEOMS(t, x, I, u_applied),[tnow tnow+dt],xkm1);
@@ -86,6 +91,13 @@ for i = 1:length(tspan)
     
     DCM = eye(3,3) + (8*skew(MRPk)*skew(MRPk) - 4*(1-s2)*skew(MRPk))/((1+s2)^2);
     
+    quat_des = triadhistory(:,i);
+    MRPdes = (1/(1+quat_des(1)))*[quat_des(2);quat_des(3);quat_des(4)];
+    s2d = MRPdes'*MRPdes;
+    if s2d>1.0
+        MRPdes = (-1*MRPdes)/s2d;
+    end    
+    MRPdesvec(:,i) = MRPdes;
     % disp(DCM)
 
     rkhat = rk/(norm(rk));
@@ -107,11 +119,12 @@ for i = 1:length(tspan)
     
     % k_term = -1*K*MRPk;
     addpath('RigidBodyKinematicsSchaubBook/Matlab/')
+    % k_term = -1*K*MRPk;
     k_term = -1*K*subMRP(MRPk,MRPdes);
     p_term = -1*P*(wk-w_des);
-    other_term = eye(3,3)*(w_dot_des - skew(wk)*w_des) + skew(w_des)*eye(3,3)*wk; % Schaub 432
-    u_applied = k_term + p_term + other_term;
-    
+    % other_term = eye(3,3)*(w_dot_des - skew(wk)*w_des) + skew(w_des)*eye(3,3)*wk; % Schaub 432
+    % u_applied = k_term + p_term + other_term;
+    u_applied = k_term + p_term;
     u_max = 8/1000; % mN-m
 
     for j = 1:3
@@ -181,11 +194,14 @@ figure
 t = tiledlayout(3,1);
 title(t,'MRPs')
 nexttile
-plot(tspan,svec(1,:))
+plot(tspan,svec(1,:),tspan,MRPdesvec(1,:))
+legend('MRP truth','MRP from TRIAD')
 nexttile
-plot(tspan,svec(2,:))
+plot(tspan,svec(2,:),tspan,MRPdesvec(2,:))
+legend('MRP truth','MRP from TRIAD')
 nexttile
-plot(tspan,svec(3,:))
+plot(tspan,svec(3,:),tspan,MRPdesvec(3,:))
+legend('MRP truth','MRP from TRIAD')
 
 figure
 t = tiledlayout(3,1);

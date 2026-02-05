@@ -51,9 +51,9 @@ Wheels:
       Axis: [1.0, 0.0, 0.0]
       Max Torque: 100.0
       Max Momentum: 100.0
-      Rotor Inertia: 0.0081
+      Rotor Inertia: 0.0004
       Body: *Body_0
-      Node: 0
+      Node: 49
       Drag-Jitter File Name: NONE
   - Wheel:
       Index: 1
@@ -61,9 +61,9 @@ Wheels:
       Axis: [0.0, 1.0, 0.0]
       Max Torque: 100.0
       Max Momentum: 100.0
-      Rotor Inertia: 0.0081
+      Rotor Inertia: 0.0004
       Body: *Body_0
-      Node: 0
+      Node: 50
       Drag-Jitter File Name: NONE
   - Wheel:
       Index: 2
@@ -71,9 +71,9 @@ Wheels:
       Axis: [0.0, 0.0, 1.0]
       Max Torque: 100.0
       Max Momentum: 100.0
-      Rotor Inertia: 0.0081
+      Rotor Inertia: 0.0004
       Body: *Body_0
-      Node: 0
+      Node: 51
       Drag-Jitter File Name: NONE
 MTBs:
   - MTB:

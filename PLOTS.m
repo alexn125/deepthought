@@ -38,16 +38,16 @@ figure
 t = tiledlayout(4,1);
 title(t,'Truth Attitude, Quaternions')
 nexttile
-plot(time_vec, qbn(:,1))
+plot(time_vec, qbn(1:end-1,1))
 ylabel('q1')
 nexttile
-plot(time_vec, qbn(:,2))
+plot(time_vec, qbn(1:end-1,2))
 ylabel('q2')
 nexttile
-plot(time_vec, qbn(:,3))
+plot(time_vec, qbn(1:end-1,3))
 ylabel('q3')
 nexttile
-plot(time_vec, qbn(:,4))
+plot(time_vec, qbn(1:end-1,4))
 ylabel('Scalar part')
 
 figure

@@ -200,3 +200,15 @@ Nodes:
       Index: 48
       Location: [0.05, 0.1, 0.15]
       Comment: Thruster Location in Body
+  - Node:
+      Index: 49
+      Location: [0.05, 0.0, 0.0]
+      Comment: RW0 Location
+  - Node:
+      Index: 50
+      Location: [0.0, 0.05, 0.0]
+      Comment: RW1 Location 
+  - Node:
+      Index: 51
+      Location: [0.0, 0.0, 0.05]
+      Comment: RW2 Location        

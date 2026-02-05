@@ -11,6 +11,6 @@ IPCs:
           Name: localhost
           Port: 10002
         Blocking: true
-      Echo to stdout: true
+      Echo to stdout: false
       Prefixes: ['SC[0].AC']
 
