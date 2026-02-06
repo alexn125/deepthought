@@ -19,7 +19,7 @@ s0 = [0;0.1;0];
 w0 = zeros(3,1);
 
 dt = 1;
-sim.end = 50;
+sim.end = 3600;
 tspan = 0:dt:sim.end;
 
 I = [0.026 0 0;0 0.06 0; 0 0 0.085];
@@ -122,9 +122,9 @@ for i = 1:length(tspan)
     % k_term = -1*K*MRPk;
     k_term = -1*K*subMRP(MRPk,MRPdes);
     p_term = -1*P*(wk-w_des);
-    % other_term = eye(3,3)*(w_dot_des - skew(wk)*w_des) + skew(w_des)*eye(3,3)*wk; % Schaub 432
-    % u_applied = k_term + p_term + other_term;
-    u_applied = k_term + p_term;
+    other_term = eye(3,3)*(w_dot_des - skew(wk)*w_des) + skew(w_des)*eye(3,3)*wk; % Schaub 432
+    u_applied = k_term + p_term + other_term;
+    % u_applied = k_term + p_term;
     u_max = 8/1000; % mN-m
 
     for j = 1:3

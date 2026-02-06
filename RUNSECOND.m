@@ -82,7 +82,7 @@ commandhistory = zeros(3,sim_time+1);
 %% GNC loop
 while its <= itsmax
     %% Read the socket
-    tic
+    % tic
     if its > 1
         readline(t); %' '
         readline(t); % [EOF]
@@ -124,7 +124,6 @@ while its <= itsmax
     readline(t); % [EOF]
 
     %% Process socket msg
-    gnccount = 1;
 
     if its == 1
         j2ktime_start = str2double(timestr{1}(17:end));
@@ -135,6 +134,13 @@ while its <= itsmax
     end
 
     meas.w = [str2double(gyro1str{1}(gyroindex:end)); str2double(gyro2str{1}(gyroindex:end)); str2double(gyro3str{1}(gyroindex:end))];
+
+    if mod(its,10) < 1e-5 || its == 1
+        disp("Ang v at time")
+        disp(its)
+        disp(meas.w)
+        disp("---------------")
+    end
 
     rxnwheelmom = [str2double(whl1str{1}(whlindex:end)); str2double(whl2str{1}(whlindex:end)); str2double(whl3str{1}(whlindex:end))];
 
@@ -214,16 +220,17 @@ while its <= itsmax
         vel_est = vel_est/norm(vel_est);
 
         % gps_pos_k = gps_pos_k/norm(gps_pos_k);
-        
+
         hhat = cross(gps_pos_k/norm(gps_pos_k),vel_est);
 
         w_des_inertial = ((2*pi)/period)*hhat;
         w_des = DCM_MRP('MRPtoDCM',est.mkp(1:3))'*w_des_inertial;
         u_max = 8/1000;
-        t_com = Control(gains,triad,est,w_des,u_max,meas);
+        w_des_dot = zeros(3,1);
+        t_com = Control(gains,triad,est,w_des,w_des_dot,u_max,meas);
 
         gps_pos_km1 = gps_pos_k;
-        
+
     end
 
     commandhistory(:,stcount) = t_com;
@@ -238,7 +245,7 @@ while its <= itsmax
 
     l1 = double(append('SC[0].AC.Whl[0].Tcmd = ',mat2str(-1*t_com(1))));
     l2 = double(append('SC[0].AC.Whl[1].Tcmd = ',mat2str(-1*t_com(2))));
-    l3 = double(append('SC[0].AC.Whl[2].Tcmd = ',mat2str(t_com(3))));
+    l3 = double(append('SC[0].AC.Whl[2].Tcmd = ',mat2str(-1*t_com(3))));
     endmsg = double('[EOF]');
 
     sending = [l1 10 l2 10 l3 10 endmsg]; % 10 is ASCII newline character
@@ -250,7 +257,7 @@ while its <= itsmax
     its = its + 1;
     gnccount = gnccount + 1;
     RETURNMSG = false;
-    toc
+    % toc
 end
 
 addpath("GNCout/SIM_ALL_STUFF/")
