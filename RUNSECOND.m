@@ -82,7 +82,7 @@ commandhistory = zeros(3,sim_time+1);
 %% GNC loop
 while its <= itsmax
     %% Read the socket
-    % tic
+    tic
     if its > 1
         readline(t); %' '
         readline(t); % [EOF]
@@ -257,7 +257,7 @@ while its <= itsmax
     its = its + 1;
     gnccount = gnccount + 1;
     RETURNMSG = false;
-    % toc
+    toc
 end
 
 addpath("GNCout/SIM_ALL_STUFF/")
