@@ -22,7 +22,7 @@ end
 % load("Missions/AlexResearch42/sim_results/qbn.42")
 len = size(qbn);
 MRPtruth = zeros(len(1),3);
-
+MRPtriad = zeros(3,length(time_vec));
 addpath("ALGORITHM/transforms/")
 
 for i = 1:len(1)
@@ -32,52 +32,61 @@ for i = 1:len(1)
     else
         MRPtruth(i,:) = conv;
     end
+    if i < len(1)
+        conv2 = (1/(1+triadhistory(1,i)))*[triadhistory(2,i); triadhistory(3,i); triadhistory(4,i)];
+        if norm(conv2) >= 1.0
+            MRPtriad(:,i) = conv2*(-1./(conv2'*conv2));
+        else
+            MRPtriad(:,i) = conv2;
+        end    
+    end
 end
+    
 
-figure
-t = tiledlayout(4,1);
-title(t,'Truth Attitude, Quaternions')
-nexttile
-plot(time_vec, qbn(1:end-1,1))
-ylabel('q1')
-nexttile
-plot(time_vec, qbn(1:end-1,2))
-ylabel('q2')
-nexttile
-plot(time_vec, qbn(1:end-1,3))
-ylabel('q3')
-nexttile
-plot(time_vec, qbn(1:end-1,4))
-ylabel('Scalar part')
+% figure
+% t = tiledlayout(4,1);
+% title(t,'Truth Attitude, Quaternions')
+% nexttile
+% plot(time_vec, qbn(1:end-1,1))
+% ylabel('q1')
+% nexttile
+% plot(time_vec, qbn(1:end-1,2))
+% ylabel('q2')
+% nexttile
+% plot(time_vec, qbn(1:end-1,3))
+% ylabel('q3')
+% nexttile
+% plot(time_vec, qbn(1:end-1,4))
+% ylabel('Scalar part')
 
 figure
 t = tiledlayout(3,1);
-title(t,'Truth vs. Estimated Attitude (MRP)')
+title(t,'Truth vs. Estimated vs. Desired Attitude(MRP)')
 nexttile
 plot(tt,pvec(1,:))
 hold on
-plot(0:len(1)-1,MRPtruth(:,1)')
+plot(0:len(1)-1,MRPtruth(:,1)',time_vec,MRPtriad(1,:))
 ylabel('MRP 1')
 xlabel('Time (s)')
-legend('Estimate','Truth','Location','best')
+legend('Estimate','Truth','Triad Output','Location','best')
 hold off
 grid on
 nexttile
 plot(tt,pvec(2,:))
 hold on
-plot(0:len(1)-1,MRPtruth(:,2)')
+plot(0:len(1)-1,MRPtruth(:,2)',time_vec,MRPtriad(2,:))
 ylabel('MRP 2')
 xlabel('Time (s)')
-legend('Estimate','Truth','Location','best')
+legend('Estimate','Truth','Triad Output','Location','best')
 hold off
 grid on
 nexttile
 plot(tt,pvec(3,:))
 hold on
-plot(0:len(1)-1,MRPtruth(:,3)')
+plot(0:len(1)-1,MRPtruth(:,3)',time_vec,MRPtriad(3,:))
 ylabel('MRP 3')
 xlabel('Time (s)')
-legend('Estimate','Truth','Location','best')
+legend('Estimate','Truth','Triad Output','Location','best')
 hold off
 grid on
 
