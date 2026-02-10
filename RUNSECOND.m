@@ -78,6 +78,8 @@ stvalidstr = strings(itsmax,1);
 stvec = zeros(sim_time+1,1);
 triadhistory = zeros(4,sim_time+1);
 commandhistory = zeros(3,sim_time+1);
+sunhistory = zeros(3,sim_time+1);
+GPShistory = zeros(3,sim_time+1);
 
 %% GNC loop
 while its <= itsmax
@@ -136,10 +138,10 @@ while its <= itsmax
     meas.w = [str2double(gyro1str{1}(gyroindex:end)); str2double(gyro2str{1}(gyroindex:end)); str2double(gyro3str{1}(gyroindex:end))];
 
     if mod(its,10) < 1e-5 || its == 1
-        disp("Ang v at time")
-        disp(its)
-        disp(meas.w)
-        disp("---------------")
+        % disp("Ang v at time")
+        % disp(its)
+        % disp(meas.w)
+        % disp("---------------")
     end
 
     rxnwheelmom = [str2double(whl1str{1}(whlindex:end)); str2double(whl2str{1}(whlindex:end)); str2double(whl3str{1}(whlindex:end))];
@@ -147,6 +149,8 @@ while its <= itsmax
     gps_inter = replace(GPSposstr,'e+0','e');
     gps_inter2 = replace(gps_inter,'e-0','e-');
     gps_pos_k = str2num(gps_inter2{1}(gpsindex:end))';
+
+    GPShistory(:,its) = gps_pos_k;
 
     st_inter = replace(st_str,'e+0','e');
     st_inter2 = replace(st_inter,'e-0','e-');
@@ -163,6 +167,8 @@ while its <= itsmax
     s1 = replace(sunpntstr_in,'e+0','e');
     s2 = replace(s1,'e-0','e-');
     sunpnt_true = str2num(s2{1}(sunindex:end))';
+
+    sunhistory(:,its) = -1*sunpnt_true;
 
     write(t,"Read!","uint8") % Ack message to Deepthought for "message recieved"
 
@@ -204,7 +210,7 @@ while its <= itsmax
     body1 = [1.0;0.0;0.0];
     body2 = [0.0;1.0;0.0];
 
-    [quat_des,MRP_des] = Guidance(gps_pos_k,sunpnt_true,body1,body2);
+    [quat_des,MRP_des] = Guidance(gps_pos_k,-1*sunpnt_true,body1,body2);
 
     triad.quat_des = quat_des;
     triad.MRP_des = MRP_des;

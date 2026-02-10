@@ -237,3 +237,23 @@ ylabel('u2')
 nexttile
 plot(time_vec, commandhistory(3,:))
 ylabel('u3')
+
+figure
+t = tiledlayout(3,1);
+title(t, "Sun pointing (inertial)")
+nexttile
+plot(time_vec, sunhistory(1,:))
+nexttile
+plot(time_vec, sunhistory(2,:))
+nexttile
+plot(time_vec, sunhistory(3,:))
+
+figure
+t = tiledlayout(3,1);
+title(t, "GPS")
+nexttile
+plot(time_vec, GPShistory(1,:))
+nexttile
+plot(time_vec, GPShistory(2,:))
+nexttile
+plot(time_vec, GPShistory(3,:))
