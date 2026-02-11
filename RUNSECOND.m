@@ -80,11 +80,12 @@ triadhistory = zeros(4,sim_time+1);
 commandhistory = zeros(3,sim_time+1);
 sunhistory = zeros(3,sim_time+1);
 GPShistory = zeros(3,sim_time+1);
+MRPerrorhistory = zeros(3,sim_time+1);
 
 %% GNC loop
 while its <= itsmax
     %% Read the socket
-    tic
+    % tisc
     if its > 1
         readline(t); %' '
         readline(t); % [EOF]
@@ -168,7 +169,7 @@ while its <= itsmax
     s2 = replace(s1,'e-0','e-');
     sunpnt_true = str2num(s2{1}(sunindex:end))';
 
-    sunhistory(:,its) = -1*sunpnt_true;
+    sunhistory(:,its) = sunpnt_true;
 
     write(t,"Read!","uint8") % Ack message to Deepthought for "message recieved"
 
@@ -210,15 +211,16 @@ while its <= itsmax
     body1 = [1.0;0.0;0.0];
     body2 = [0.0;1.0;0.0];
 
-    [quat_des,MRP_des] = Guidance(gps_pos_k,-1*sunpnt_true,body1,body2);
+    [quat_des,MRP_des] = Guidance(gps_pos_k,sunpnt_true,body1,body2);
 
     triad.quat_des = quat_des;
     triad.MRP_des = MRP_des;
-
+    
     triadhistory(:,stcount) = triad.quat_des;
 
     if its == 1
         t_com = [0;0;0];
+        aux = [0;0;0];
         gps_pos_km1 = gps_pos_k;
     else
         % disp(gps_pos_k - gps_pos_km1)
@@ -233,13 +235,14 @@ while its <= itsmax
         w_des = DCM_MRP('MRPtoDCM',est.mkp(1:3))'*w_des_inertial;
         u_max = 8/1000;
         w_des_dot = zeros(3,1);
-        t_com = Control(gains,triad,est,w_des,w_des_dot,u_max,meas);
-
+        [t_com,aux] = Control(gains,triad,est,w_des,w_des_dot,u_max,meas);
         gps_pos_km1 = gps_pos_k;
 
     end
 
     commandhistory(:,stcount) = t_com;
+    MRPerrorhistory(:,stcount) = aux;
+    
 
     %% set navigation indices for next time
     mkm1 = mkp;
@@ -252,6 +255,9 @@ while its <= itsmax
     l1 = double(append('SC[0].AC.Whl[0].Tcmd = ',mat2str(-1*t_com(1))));
     l2 = double(append('SC[0].AC.Whl[1].Tcmd = ',mat2str(-1*t_com(2))));
     l3 = double(append('SC[0].AC.Whl[2].Tcmd = ',mat2str(-1*t_com(3))));
+    % l1 = double(append('SC[0].AC.Whl[0].Tcmd = 0.0'));
+    % l2 = double(append('SC[0].AC.Whl[1].Tcmd = 0.0'));
+    % l3 = double(append('SC[0].AC.Whl[2].Tcmd = 0.0'));
     endmsg = double('[EOF]');
 
     sending = [l1 10 l2 10 l3 10 endmsg]; % 10 is ASCII newline character
@@ -263,7 +269,7 @@ while its <= itsmax
     its = its + 1;
     gnccount = gnccount + 1;
     RETURNMSG = false;
-    toc
+    % toc
 end
 
 addpath("GNCout/SIM_ALL_STUFF/")

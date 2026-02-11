@@ -240,6 +240,19 @@ ylabel('u3')
 
 figure
 t = tiledlayout(3,1);
+title(t, "MRP error (control) over time")
+nexttile
+plot(time_vec, MRPerrorhistory(1,:))
+ylabel('u1')
+nexttile
+plot(time_vec, MRPerrorhistory(2,:))
+ylabel('u2')
+nexttile
+plot(time_vec, MRPerrorhistory(3,:))
+ylabel('u3')
+
+figure
+t = tiledlayout(3,1);
 title(t, "Sun pointing (inertial)")
 nexttile
 plot(time_vec, sunhistory(1,:))

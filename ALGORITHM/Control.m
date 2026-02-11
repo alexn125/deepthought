@@ -1,4 +1,4 @@
-function command = Control(gains,triad,est,w_des,w_des_dot,u_max,meas)
+function [command,aux] = Control(gains,triad,est,w_des,w_des_dot,u_max,meas)
 
 addpath('ALGORITHM/transforms/')
 addpath('ALGORITHM/models/')
@@ -11,9 +11,11 @@ MRP_error = subMRP(MRP_est,triad.MRP_des);
 
 term1 = -1*gains.K*MRP_error;
 term2 = -1*gains.P*w_error;
-term3 = eye(3,3)*(w_des_dot - skew(meas.w)*w_des) + skew(w_des)*eye(3,3)*meas.w;
+term3a = eye(3,3)*(w_des_dot - skew(meas.w)*w_des);
+term3b = skew(w_des)*eye(3,3)*meas.w;
 
-command = term1 + term2 + term3;
+command = term1 + term2 + term3a + term3b;
+aux = MRP_error;
 
 for j = 1:3
     if abs(command(j))>u_max
