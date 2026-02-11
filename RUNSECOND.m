@@ -29,6 +29,8 @@ RETURNMSG = false;
 
 sim_time = 0.0;
 
+J = [0.026 0.0 0.0;0.0 0.06 0.0;0.0 0.0 0.085];
+
 % simplots = true;
 
 %% initialize nav
@@ -81,11 +83,12 @@ commandhistory = zeros(3,sim_time+1);
 sunhistory = zeros(3,sim_time+1);
 GPShistory = zeros(3,sim_time+1);
 MRPerrorhistory = zeros(3,sim_time+1);
+gyrohistory = zeros(3,sim_time+1);
 
 %% GNC loop
 while its <= itsmax
     %% Read the socket
-    % tisc
+    tic
     if its > 1
         readline(t); %' '
         readline(t); % [EOF]
@@ -137,7 +140,8 @@ while its <= itsmax
     end
 
     meas.w = [str2double(gyro1str{1}(gyroindex:end)); str2double(gyro2str{1}(gyroindex:end)); str2double(gyro3str{1}(gyroindex:end))];
-
+    gyrohistory(:,its) = meas.w;
+    
     if mod(its,10) < 1e-5 || its == 1
         % disp("Ang v at time")
         % disp(its)
@@ -235,7 +239,7 @@ while its <= itsmax
         w_des = DCM_MRP('MRPtoDCM',est.mkp(1:3))'*w_des_inertial;
         u_max = 8/1000;
         w_des_dot = zeros(3,1);
-        [t_com,aux] = Control(gains,triad,est,w_des,w_des_dot,u_max,meas);
+        [t_com,aux] = Control(gains,triad,est,w_des,w_des_dot,u_max,meas,J);
         gps_pos_km1 = gps_pos_k;
 
     end
@@ -269,7 +273,7 @@ while its <= itsmax
     its = its + 1;
     gnccount = gnccount + 1;
     RETURNMSG = false;
-    % toc
+    toc
 end
 
 addpath("GNCout/SIM_ALL_STUFF/")

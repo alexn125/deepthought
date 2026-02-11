@@ -6,7 +6,6 @@ clear all
 
 load('GNCout/SIM_ALL_STUFF/results.mat')
 addpath('RigidBodyKinematicsSchaubBook/Matlab/')
-addpath('ALGORITHM/transforms')
 %% - NAV plots
 
 pvec = nav.m_history(1:3,:);
@@ -129,7 +128,7 @@ evec = zeros(3,length(time_vec));
 
 for i = 1:length(time_vec)
     % evec(:,i) = MRPtruth(i,:)' - pvec(:,2*i-1);
-    evec(:,i) = subMRP(MRPtruth(i,:)',pvec(:,2*i-1));
+    evec(:,i) = subMRP(MRPtriad(i,:)',pvec(:,2*i-1));
 end
 
 figure
@@ -242,30 +241,22 @@ len = size(wbn);
 
 figure
 t = tiledlayout(3,1);
-title(t,"Truth and measured angular velocity (rad/s)")
+title(t,"Truth angular velocity (rad/s)")
 nexttile
-plot(0:len(1)-1,wbn(:,1)',time_vec,gyrohistory(1,:))
-legend('Truth','Measured')
+plot(0:len(1)-1,wbn(:,1)')
 xlabel('Time (s)')
-ylabel('$\omega_x$','Interpreter','latex')
+ylabel('\omega_x','Interpreter','latex')
 grid on
 nexttile
-plot(0:len(1)-1,wbn(:,2)',time_vec,gyrohistory(2,:))
-legend('Truth','Measured')
+plot(0:len(1)-1,wbn(:,2)')
 xlabel('Time (s)')
-ylabel('$\omega_y$','Interpreter','latex')
+ylabel('\omega_y','Interpreter','latex')
 grid on
 nexttile
-plot(0:len(1)-1,wbn(:,3)',time_vec,gyrohistory(3,:))
-legend('Truth','Measured')
+plot(0:len(1)-1,wbn(:,3)')
 xlabel('Time (s)')
-ylabel('$\omega_z$','Interpreter','latex')
+ylabel('\omega_z','Interpreter','latex')
 grid on
-
-MRPtriad = zeros(3,length(time_vec));
-for i = 1:length(time_vec)
-    MRPtriad(:,i) = qtoMRP(triadhistory(:,i),1);
-end
 
 figure
 t = tiledlayout(4,1);
@@ -285,22 +276,6 @@ xlabel('Time (s)')
 nexttile
 plot(time_vec, triadhistory(1,:))
 ylabel('Scalar part')
-xlabel('Time (s)')
-
-figure
-t = tiledlayout(3,1);
-title(t, "Desired attitude from TRIAD method (MRP)")
-nexttile
-plot(time_vec, MRPtriad(1,:))
-ylabel('MRP 1')
-xlabel('Time (s)')
-nexttile
-plot(time_vec, MRPtriad(2,:))
-ylabel('MRP 2')
-xlabel('Time (s)')
-nexttile
-plot(time_vec, MRPtriad(3,:))
-ylabel('MRP 3')
 xlabel('Time (s)')
 
 figure
@@ -337,7 +312,7 @@ xlabel('Time (s)')
 
 figure
 t = tiledlayout(3,1);
-title(t, "Sun pointing unit vector (inertial)")
+title(t, "Sun pointing (inertial)")
 nexttile
 plot(time_vec, sunhistory(1,:))
 ylabel('x')
@@ -353,15 +328,15 @@ ylabel('z')
 
 figure
 t = tiledlayout(3,1);
-title(t, "GPS measurements (meters)")
+title(t, "GPS")
 nexttile
 plot(time_vec, GPShistory(1,:))
 xlabel('Time (s)')
-ylabel('x')
+ylabel('z')
 nexttile
 plot(time_vec, GPShistory(2,:))
 xlabel('Time (s)')
-ylabel('y')
+ylabel('z')
 nexttile
 plot(time_vec, GPShistory(3,:))
 xlabel('Time (s)')
