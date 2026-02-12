@@ -84,6 +84,7 @@ sunhistory = zeros(3,sim_time+1);
 GPShistory = zeros(3,sim_time+1);
 MRPerrorhistory = zeros(3,sim_time+1);
 gyrohistory = zeros(3,sim_time+1);
+startrackhistory = zeros(4,sim_time+1);
 
 %% GNC loop
 while its <= itsmax
@@ -160,6 +161,7 @@ while its <= itsmax
     st_inter = replace(st_str,'e+0','e');
     st_inter2 = replace(st_inter,'e-0','e-');
     st_att = str2num(st_inter2{1}(startrackindex:end))';
+    startrackhistory(:,its) = st_att;
 
     true_attinter = replace(attstrtrue,'e+0','e');
     true_attinter2 = replace(true_attinter,'e-0','e-');

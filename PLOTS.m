@@ -44,21 +44,21 @@ for i = 1:len(1)
 end
     
 
-% figure
-% t = tiledlayout(4,1);
-% title(t,'Truth Attitude, Quaternions')
-% nexttile
-% plot(time_vec, qbn(1:end-1,1))
-% ylabel('q1')
-% nexttile
-% plot(time_vec, qbn(1:end-1,2))
-% ylabel('q2')
-% nexttile
-% plot(time_vec, qbn(1:end-1,3))
-% ylabel('q3')
-% nexttile
-% plot(time_vec, qbn(1:end-1,4))
-% ylabel('Scalar part')
+figure
+t = tiledlayout(4,1);
+title(t,'Star Tracker Measured Attitude, Quaternions')
+nexttile
+plot(time_vec, startrackhistory(1,:))
+ylabel('q1')
+nexttile
+plot(time_vec, startrackhistory(2,:))
+ylabel('q2')
+nexttile
+plot(time_vec, startrackhistory(3,:))
+ylabel('q3')
+nexttile
+plot(time_vec, startrackhistory(4,:))
+ylabel('Scalar part')
 
 figure
 t = tiledlayout(3,1);
