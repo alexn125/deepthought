@@ -4,7 +4,8 @@ clc
 close all
 clear all
 
-load('GNCout/SIM_ALL_STUFF/results.mat')
+% load('GNCout/SIM_ALL_STUFF/results.mat') % < --- most recent sim
+load('GNCout/SIM_ALL_STUFF/FULLresults.mat') % < --- sim where everything works (2/13)
 addpath('RigidBodyKinematicsSchaubBook/Matlab/')
 addpath('ALGORITHM/transforms')
 %% - NAV plots
@@ -62,7 +63,7 @@ ylabel('Scalar part')
 
 figure
 t = tiledlayout(3,1);
-title(t,'Truth vs. Estimated Attitude(MRP)')
+title(t,'Truth vs. Estimated Attitude (MRP)')
 nexttile
 plot(tt,pvec(1,:))
 hold on
@@ -93,7 +94,7 @@ grid on
 
 figure
 t = tiledlayout(3,1);
-title(t,'Truth vs. Estimated vs. Desired Attitude(MRP)')
+title(t,'Truth vs. Estimated vs. Desired Attitude (MRP)')
 nexttile
 plot(tt,pvec(1,:))
 hold on
@@ -261,6 +262,25 @@ legend('Truth','Measured')
 xlabel('Time (s)')
 ylabel('$\omega_z$','Interpreter','latex')
 grid on
+
+% figure
+% t = tiledlayout(3,1);
+% title(t,"Desired angular velocity from TRIAD (rad/s)")
+% nexttile
+% plot(time_vec,wdeshistory(1,:))
+% xlabel('Time (s)')
+% ylabel('$\omega_x$','Interpreter','latex')
+% grid on
+% nexttile
+% plot(time_vec,wdeshistory(2,:))
+% xlabel('Time (s)')
+% ylabel('$\omega_y$','Interpreter','latex')
+% grid on
+% nexttile
+% plot(time_vec,wdeshistory(3,:))
+% xlabel('Time (s)')
+% ylabel('$\omega_z$','Interpreter','latex')
+% grid on
 
 MRPtriad = zeros(3,length(time_vec));
 for i = 1:length(time_vec)

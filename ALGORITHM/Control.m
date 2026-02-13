@@ -16,6 +16,7 @@ term3b = skew(w_des)*J*meas.w;
 
 command = term1 + term2 + term3a + term3b;
 aux = MRP_error;
+% aux = term3a;
 
 for j = 1:3
     if abs(command(j))>u_max

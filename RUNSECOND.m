@@ -31,7 +31,7 @@ sim_time = 0.0;
 
 J = [0.026 0.0 0.0;0.0 0.06 0.0;0.0 0.0 0.085];
 
-% simplots = true;
+choice = input('0 for nav only (setting torque commands to zero), 1 for full GNC:\n');
 
 %% initialize nav
 
@@ -85,6 +85,7 @@ GPShistory = zeros(3,sim_time+1);
 MRPerrorhistory = zeros(3,sim_time+1);
 gyrohistory = zeros(3,sim_time+1);
 startrackhistory = zeros(4,sim_time+1);
+wdeshistory = zeros(3,sim_time+1);
 
 %% GNC loop
 while its <= itsmax
@@ -228,6 +229,7 @@ while its <= itsmax
         t_com = [0;0;0];
         aux = [0;0;0];
         gps_pos_km1 = gps_pos_k;
+        w_des = zeros(3,1);
     else
         % disp(gps_pos_k - gps_pos_km1)
         vel_est = (gps_pos_k - gps_pos_km1)/sim.rate;
@@ -246,6 +248,7 @@ while its <= itsmax
 
     end
 
+    wdeshistory(:,stcount) = w_des;
     commandhistory(:,stcount) = t_com;
     MRPerrorhistory(:,stcount) = aux;
     
@@ -258,12 +261,19 @@ while its <= itsmax
 
     %% Send commands
 
-    l1 = double(append('SC[0].AC.Whl[0].Tcmd = ',mat2str(-1*t_com(1))));
-    l2 = double(append('SC[0].AC.Whl[1].Tcmd = ',mat2str(-1*t_com(2))));
-    l3 = double(append('SC[0].AC.Whl[2].Tcmd = ',mat2str(-1*t_com(3))));
-    % l1 = double(append('SC[0].AC.Whl[0].Tcmd = 0.0'));
-    % l2 = double(append('SC[0].AC.Whl[1].Tcmd = 0.0'));
-    % l3 = double(append('SC[0].AC.Whl[2].Tcmd = 0.0'));
+    if choice == 1
+        l1 = double(append('SC[0].AC.Whl[0].Tcmd = ',mat2str(-1*t_com(1))));
+        l2 = double(append('SC[0].AC.Whl[1].Tcmd = ',mat2str(-1*t_com(2))));
+        l3 = double(append('SC[0].AC.Whl[2].Tcmd = ',mat2str(-1*t_com(3))));
+    elseif choice == 0
+        l1 = double(append('SC[0].AC.Whl[0].Tcmd = 0.0'));
+        l2 = double(append('SC[0].AC.Whl[1].Tcmd = 0.0'));
+        l3 = double(append('SC[0].AC.Whl[2].Tcmd = 0.0'));
+    else
+        error('check input')
+
+    end
+    
     endmsg = double('[EOF]');
 
     sending = [l1 10 l2 10 l3 10 endmsg]; % 10 is ASCII newline character
