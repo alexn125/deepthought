@@ -8,6 +8,8 @@ clear all
 load('GNCout/SIM_ALL_STUFF/FULLresults.mat') % < --- sim where everything works (2/13)
 addpath('RigidBodyKinematicsSchaubBook/Matlab/')
 addpath('ALGORITHM/transforms')
+
+rad2deg = 180/pi;
 %% - NAV plots
 
 pvec = nav.m_history(1:3,:);
@@ -243,21 +245,21 @@ len = size(wbn);
 
 figure
 t = tiledlayout(3,1);
-title(t,"Truth and measured angular velocity (rad/s)")
+title(t,"Truth and measured angular velocity (deg/s)")
 nexttile
-plot(0:len(1)-1,wbn(:,1)',time_vec,gyrohistory(1,:))
+plot(0:len(1)-1,wbn(:,1)'*rad2deg,time_vec,gyrohistory(1,:)*rad2deg)
 legend('Truth','Measured')
 xlabel('Time (s)')
 ylabel('$\omega_x$','Interpreter','latex')
 grid on
 nexttile
-plot(0:len(1)-1,wbn(:,2)',time_vec,gyrohistory(2,:))
+plot(0:len(1)-1,wbn(:,2)'*rad2deg,time_vec,gyrohistory(2,:)*rad2deg)
 legend('Truth','Measured')
 xlabel('Time (s)')
 ylabel('$\omega_y$','Interpreter','latex')
 grid on
 nexttile
-plot(0:len(1)-1,wbn(:,3)',time_vec,gyrohistory(3,:))
+plot(0:len(1)-1,wbn(:,3)'*rad2deg,time_vec,gyrohistory(3,:)*rad2deg)
 legend('Truth','Measured')
 xlabel('Time (s)')
 ylabel('$\omega_z$','Interpreter','latex')
