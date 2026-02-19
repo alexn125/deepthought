@@ -87,6 +87,10 @@ gyrohistory = zeros(3,sim_time+1);
 startrackhistory = zeros(4,sim_time+1);
 wdeshistory = zeros(3,sim_time+1);
 
+cterms.term1h = zeros(3,sim_time+1);
+cterms.term2h = zeros(3,sim_time+1);
+cterms.term3h = zeros(3,sim_time+1);
+
 %% GNC loop
 while its <= itsmax
     %% Read the socket
@@ -230,6 +234,7 @@ while its <= itsmax
         aux = [0;0;0];
         gps_pos_km1 = gps_pos_k;
         w_des = zeros(3,1);
+
     else
         % disp(gps_pos_k - gps_pos_km1)
         vel_est = (gps_pos_k - gps_pos_km1)/sim.rate;
@@ -243,8 +248,12 @@ while its <= itsmax
         w_des = DCM_MRP('MRPtoDCM',est.mkp(1:3))'*w_des_inertial;
         u_max = 8/1000;
         w_des_dot = zeros(3,1);
-        [t_com,aux] = Control(gains,triad,est,w_des,w_des_dot,u_max,meas,J);
+        [t_com,aux,term1,term2,term3a,term3b] = Control(gains,triad,est,w_des,w_des_dot,u_max,meas,J);
         gps_pos_km1 = gps_pos_k;
+
+        cterms.term1h(:,its) = term1;
+        cterms.term2h(:,its) = term2;
+        cterms.term3h(:,its) = term3a + term3b;
 
     end
 

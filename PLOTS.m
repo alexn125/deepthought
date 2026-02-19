@@ -287,25 +287,25 @@ for i = 1:length(time_vec)
     MRPtriad(:,i) = qtoMRP(triadhistory(:,i),1);
 end
 
-figure
-t = tiledlayout(4,1);
-title(t, "Desired attitude from TRIAD method")
-nexttile
-plot(time_vec, triadhistory(2,:))
-ylabel('q1')
-xlabel('Time (s)')
-nexttile
-plot(time_vec, triadhistory(3,:))
-ylabel('q2')
-xlabel('Time (s)')
-nexttile
-plot(time_vec, triadhistory(4,:))
-ylabel('q3')
-xlabel('Time (s)')
-nexttile
-plot(time_vec, triadhistory(1,:))
-ylabel('Scalar part')
-xlabel('Time (s)')
+% figure
+% t = tiledlayout(4,1);
+% title(t, "Desired attitude from TRIAD method")
+% nexttile
+% plot(time_vec, triadhistory(2,:))
+% ylabel('q1')
+% xlabel('Time (s)')
+% nexttile
+% plot(time_vec, triadhistory(3,:))
+% ylabel('q2')
+% xlabel('Time (s)')
+% nexttile
+% plot(time_vec, triadhistory(4,:))
+% ylabel('q3')
+% xlabel('Time (s)')
+% nexttile
+% plot(time_vec, triadhistory(1,:))
+% ylabel('Scalar part')
+% xlabel('Time (s)')
 
 figure
 t = tiledlayout(3,1);
@@ -355,34 +355,46 @@ plot(time_vec, MRPerrorhistory(3,:))
 ylabel('MRP 3')
 xlabel('Time (s)')
 
-figure
-t = tiledlayout(3,1);
-title(t, "Sun pointing unit vector (inertial)")
-nexttile
-plot(time_vec, sunhistory(1,:))
-ylabel('x')
-xlabel('Time (s)')
-nexttile
-plot(time_vec, sunhistory(2,:))
-xlabel('Time (s)')
-ylabel('y')
-nexttile
-plot(time_vec, sunhistory(3,:))
-xlabel('Time (s)')
-ylabel('z')
+% figure
+% t = tiledlayout(3,1);
+% title(t, "Sun pointing unit vector (inertial)")
+% nexttile
+% plot(time_vec, sunhistory(1,:))
+% ylabel('x')
+% xlabel('Time (s)')
+% nexttile
+% plot(time_vec, sunhistory(2,:))
+% xlabel('Time (s)')
+% ylabel('y')
+% nexttile
+% plot(time_vec, sunhistory(3,:))
+% xlabel('Time (s)')
+% ylabel('z')
+% 
+% figure
+% t = tiledlayout(3,1);
+% title(t, "GPS measurements (meters)")
+% nexttile
+% plot(time_vec, GPShistory(1,:))
+% xlabel('Time (s)')
+% ylabel('x')
+% nexttile
+% plot(time_vec, GPShistory(2,:))
+% xlabel('Time (s)')
+% ylabel('y')
+% nexttile
+% plot(time_vec, GPShistory(3,:))
+% xlabel('Time (s)')
+% ylabel('z')
 
-figure
-t = tiledlayout(3,1);
-title(t, "GPS measurements (meters)")
-nexttile
-plot(time_vec, GPShistory(1,:))
-xlabel('Time (s)')
-ylabel('x')
-nexttile
-plot(time_vec, GPShistory(2,:))
-xlabel('Time (s)')
-ylabel('y')
-nexttile
-plot(time_vec, GPShistory(3,:))
-xlabel('Time (s)')
-ylabel('z')
+% figure
+% t = tiledlayout(3,1);
+% nexttile
+% plot(time_vec,cterms.term1h(1,:),time_vec,cterms.term2h(1,:),time_vec,cterms.term3h(1,:))
+% legend('MRP term','Angular velocity error term','Third term')
+% nexttile
+% plot(time_vec,cterms.term1h(2,:),time_vec,cterms.term2h(2,:),time_vec,cterms.term3h(2,:))
+% legend('MRP term','Angular velocity error term','Third term')
+% nexttile
+% plot(time_vec,cterms.term1h(3,:),time_vec,cterms.term2h(3,:),time_vec,cterms.term3h(3,:))
+% legend('MRP term','Angular velocity error term','Third term')

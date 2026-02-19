@@ -1,4 +1,4 @@
-function [command,aux] = Control(gains,triad,est,w_des,w_des_dot,u_max,meas,J)
+function [command,aux,term1,term2,term3a,term3b] = Control(gains,triad,est,w_des,w_des_dot,u_max,meas,J)
 
 addpath('ALGORITHM/transforms/')
 addpath('ALGORITHM/models/')
