@@ -5,7 +5,8 @@ close all
 clear all
 
 % load('GNCout/SIM_ALL_STUFF/results.mat') % < --- most recent sim
-load('GNCout/SIM_ALL_STUFF/FULLresults.mat') % < --- sim where everything works (2/13)
+% load('GNCout/SIM_ALL_STUFF/FULLresults.mat') % < --- sim where everything works (2/13)
+load('GNCout/SIM_ALL_STUFF/NAVONLYresults.mat') % < --- nav only sim (2/20)
 addpath('RigidBodyKinematicsSchaubBook/Matlab/')
 addpath('ALGORITHM/transforms')
 
