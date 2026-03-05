@@ -138,7 +138,7 @@ end
 
 figure
 t = tiledlayout(3,1);
-title(t,'Attitude Error (truth - estimate) and 3 sigma covariance (MRP)')
+title(t,'Attitude Error and 3 sigma covariance (MRP)')
 nexttile
 plot(time_vec,evec(1,:))
 hold on
