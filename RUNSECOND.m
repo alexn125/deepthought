@@ -19,7 +19,8 @@ trueattindex = 16;
 avindex = 16;
 sunindex = 16;
 
-sim_length = 3600;
+% sim_length = 3600;
+sim_length = 5;
 sim.rate = 1; %Hz
 
 itsmax = sim_length*sim.rate + 1;
@@ -198,13 +199,16 @@ while its <= itsmax
     else
         stvec(stcount) = 0;
     end
-
+    
+    disp(its)
     [~,~,mkm,Pkm,mkp,Pkp] = Navigation(est,meas,noise,sim_time,dt);
 
     est.mkm = mkm;
     est.Pkm = Pkm;
     est.mkp = mkp;
     est.Pkp = Pkp;
+
+    % disp(Pkm)
 
     %store nav outputs
     cnt = cnt + 1;

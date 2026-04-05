@@ -22,7 +22,7 @@ mdot = f+g;
 
 %integrate covariance
 Pdot = F*P + P*F' + G*0.01*G' + Q;
-
+disp(F*P + P*F')
 % Pdot = F*P + P*F' + G*Q*G';
 
 xdot = [mdot;Pdot(:)];
