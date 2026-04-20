@@ -5,8 +5,8 @@ close all
 clear all
 
 % load('GNCout/SIM_ALL_STUFF/results.mat') % < --- most recent sim
-load('GNCout/SIM_ALL_STUFF/FULLresults.mat') % < --- sim where everything works (2/13)
-% load('GNCout/SIM_ALL_STUFF/NAVONLYresults.mat') % < --- nav only sim (2/20)
+% load('GNCout/SIM_ALL_STUFF/FULLresults.mat') % < --- sim where everything works (2/13)
+load('GNCout/SIM_ALL_STUFF/NAVONLYresults.mat') % < --- nav only sim (2/20)
 addpath('RigidBodyKinematicsSchaubBook/Matlab/')
 addpath('ALGORITHM/transforms')
 
@@ -48,21 +48,21 @@ for i = 1:len(1)
 end
     
 
-figure
-t = tiledlayout(4,1);
-title(t,'Star Tracker Measured Attitude, Quaternions')
-nexttile
-plot(time_vec, startrackhistory(1,:))
-ylabel('q1')
-nexttile
-plot(time_vec, startrackhistory(2,:))
-ylabel('q2')
-nexttile
-plot(time_vec, startrackhistory(3,:))
-ylabel('q3')
-nexttile
-plot(time_vec, startrackhistory(4,:))
-ylabel('Scalar part')
+% figure
+% t = tiledlayout(4,1);
+% title(t,'Star Tracker Measured Attitude, Quaternions')
+% nexttile
+% plot(time_vec, startrackhistory(1,:))
+% ylabel('q1')
+% nexttile
+% plot(time_vec, startrackhistory(2,:))
+% ylabel('q2')
+% nexttile
+% plot(time_vec, startrackhistory(3,:))
+% ylabel('q3')
+% nexttile
+% plot(time_vec, startrackhistory(4,:))
+% ylabel('Scalar part')
 
 figure
 t = tiledlayout(3,1);
@@ -145,6 +145,7 @@ hold on
 plot(tt,3*Pvec(1,:),'r',tt,-3*Pvec(1,:),'r')
 legend('MRP 1','$+3\sigma$','$-3\sigma$','Interpreter','latex','Location','best');
 xlabel('Time (s)')
+ylabel('MRP 1')
 hold off
 grid on
 nexttile
@@ -153,6 +154,7 @@ hold on
 plot(tt,3*Pvec(2,:),'r',tt,-3*Pvec(2,:),'r')
 legend('MRP 2','$+3\sigma$','$-3\sigma$','Interpreter','latex','Location','best');
 xlabel('Time (s)')
+ylabel('MRP 2')
 hold off
 grid on
 nexttile
@@ -161,6 +163,7 @@ hold on
 plot(tt,3*Pvec(3,:),'r',tt,-3*Pvec(3,:),'r')
 legend('MRP 3','$+3\sigma$','$-3\sigma$','Interpreter','latex','Location','best');
 xlabel('Time (s)')
+ylabel('MRP 3')
 hold off
 grid on
 % saveas(gcf,'GNCout/nav_errcovar.png')
@@ -174,6 +177,7 @@ plot(time_vec,evec(1,:))
 hold on
 scatter(time_vec,stvec+0.05,5,'r','x')
 legend('MRP 1 Error','ST Invalid','Location','best')
+ylabel('MRP 1')
 xlabel('Time (s)')
 hold off
 grid on
@@ -183,6 +187,7 @@ plot(time_vec,evec(2,:))
 hold on
 scatter(time_vec,stvec+0.05,5,'r','x')
 legend('MRP 2 Error','ST Invalid','Location','best')
+ylabel('MRP 2')
 xlabel('Time (s)')
 hold off
 grid on
@@ -192,6 +197,7 @@ plot(time_vec,evec(3,:))
 hold on
 scatter(time_vec,stvec+0.05,5,'r','x')
 legend('MRP 3 Error','ST Invalid','Location','best')
+ylabel('MRP 3')
 xlabel('Time (s)')
 hold off
 grid on
